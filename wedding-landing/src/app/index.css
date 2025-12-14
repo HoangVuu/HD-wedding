@@ -1,0 +1,60 @@
+:root {
+  --hero-background-shift: clamp(0.75rem, 3vw, 3rem);
+  --hero-portrait-shift: clamp(0.5rem, 2.5vw, 2rem);
+}
+
+.hero-slide {
+  overflow: hidden;
+}
+
+.hero-slide img {
+  transition: transform 1.2s ease, scale 1.2s ease;
+}
+
+@media (min-width: 1024px) {
+  .hero-slide img {
+    transform: translateX(calc(-1 * var(--hero-background-shift)));
+  }
+}
+
+.hero-portrait-panel {
+  transition: transform 0.8s ease;
+}
+
+@media (min-width: 1024px) {
+  .hero-portrait-panel {
+    transform: translateX(var(--hero-portrait-shift));
+  }
+}
+
+.hero-portrait-panel img {
+  transition: transform 0.8s ease;
+}
+
+.hero-portrait-panel:hover img {
+  transform: scale(1.02);
+}
+
+.journey-horizontal-track {
+  will-change: transform;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .journey-horizontal-track {
+    padding: 0 2.5rem;
+  }
+}
+
+.journey-horizontal-slide {
+  box-shadow: 0 25px 50px rgba(149, 64, 85, 0.15);
+}
+.img-hero-slide {
+  width: 50vw;
+}
+
+@media (max-width: 767px) {
+  .img-hero-slide {
+    transform: translateY(-550px);
+  }
+}

@@ -1,0 +1,18 @@
+<svg width="900" height="1100" viewBox="0 0 900 1100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4d2d8"/>
+      <stop offset="40%" stop-color="#f7bfcf"/>
+      <stop offset="100%" stop-color="#a26a9a"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#120a34"/>
+      <stop offset="100%" stop-color="#05020f"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1100" rx="80" fill="url(#g2)"/>
+  <circle cx="450" cy="380" r="280" fill="url(#g1)" opacity="0.85"/>
+  <path d="M120 850 C220 720 680 720 780 850 L780 980 C780 1030 740 1070 690 1070 L210 1070 C160 1070 120 1030 120 980 Z" fill="#f7c6d3" opacity="0.45"/>
+  <text x="50%" y="63%" text-anchor="middle" font-family="'Playfair Display', serif" font-size="96" fill="#fff">Q & D</text>
+  <text x="50%" y="72%" text-anchor="middle" font-family="'Manrope', sans-serif" font-size="28" fill="#fef6ee" letter-spacing="8">FOREVER BEGINS</text>
+</svg>

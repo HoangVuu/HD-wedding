@@ -1,0 +1,14 @@
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbe0e6"/>
+      <stop offset="100%" stop-color="#e5b0c3"/>
+    </linearGradient>
+    <pattern id="dots" patternUnits="userSpaceOnUse" width="20" height="20">
+      <circle cx="4" cy="4" r="2" fill="#fdf5f7" opacity="0.35"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="600" rx="48" fill="url(#gradient)"/>
+  <rect width="900" height="600" rx="48" fill="url(#dots)"/>
+  <text x="50%" y="50%" text-anchor="middle" font-family="'Playfair Display', serif" font-size="72" fill="#7a3f63">Quốc Hoàng ❤ Ngọc Đăng</text>
+</svg>
