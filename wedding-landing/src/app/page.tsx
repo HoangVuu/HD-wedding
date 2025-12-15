@@ -147,6 +147,37 @@ const marqueeImages = [{
 
 
 
+const collageImages = [
+  "/media/DAG_3724.jpg", 
+  "/media/DAG_4308.jpg",
+  "/media/DAG_4260.jpg",
+  
+  "/media/DAG_4135.jpg", // do
+  "/media/DAG_4224.jpg",
+  "/media/DAG_4713.jpg",
+  "/media/DAG_4761.jpg",
+  
+  "/media/DAG_4740.jpg",
+  "/media/DAG_3794.jpg", // do
+  
+  "/media/DAG_4765.jpg",
+"/media/DAG_3941.jpg", // do
+"/media/DAG_3775.jpg",
+"/media/DAG_4757.jpg",
+
+
+"/media/DAG_4705.jpg",
+"/media/DAG_4492.jpg",
+"/media/DAG_4464.jpg",
+"/media/DAG_4337.jpg",
+"/media/DAG_4232.jpg",
+
+
+"/media/DAG_3870.jpg",
+"/media/DAG_3919.jpg",
+
+];
+
 const journeyAlbumSlides = [
   {
     src: "/media/journey/donghanh-5.jpg",
@@ -223,9 +254,9 @@ const blessingPlaceholders: Message[] = [
 ];
 
 const musicUrl = "/media/audio/wedding.webm";
-const googleSheetsWebhookUrl =
-  process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEBHOOK_URL ??
-  "https://script.google.com/macros/s/AKfycbySEZRoCe231aKBX5QW8eVli-ITvzmI9Xxjx8b5zdIRN0bM1lFJAxOAQIA5QqFtRc7q/exec";
+const sheetDbWebhookUrl =
+  process.env.NEXT_PUBLIC_SHEETDB_URL ??
+  "https://sheetdb.io/api/v1/c6eefggtbyk8s";
 
 const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 40 },
@@ -250,7 +281,7 @@ function ParallaxSection({
   priority = false,
   className = "",
   contentClassName = "",
-  // overlayClassName = "from-white/95 via-white/85 to-white/90",
+  overlayClassName = "bg-linear-to-br from-white/95 via-white/85 to-white/90",
   children,
 }: ParallaxSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -290,8 +321,7 @@ function ParallaxSection({
           className="object-cover"
         />
       </motion.div>
-      <div className={`relative h-full w-full bg-gradient-to-br from-white/15 via-white/17 to-white/20`}>
-
+      <div className={`relative h-full w-full ${overlayClassName}`}>
         <div className={contentClassName}>{children}</div>
       </div>
     </section>
@@ -305,6 +335,7 @@ export default function Home() {
     name: "",
     joinAt: [] as string[],
     message: "",
+    guests: "1",
   });
   const [formStatus, setFormStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -327,6 +358,23 @@ export default function Home() {
   const journeyAlbumRef = useRef<HTMLElement | null>(null);
   const journeySlidesRefs = useRef<HTMLDivElement[]>([]);
   const heroCtaRefs = useRef<HTMLAnchorElement[]>([]);
+  const [letterOpened, setLetterOpened] = useState(false);
+  const galleryTextAnimation = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.9, ease: "easeInOut" as const },
+    },
+  };
+  const galleryItemAnimation = {
+    hidden: { opacity: 0, scale: 0.92 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8, ease: "easeInOut" as const },
+    },
+  };
 
   const buttonHover = {
     whileHover: { scale: 1.05, y: -2 },
@@ -338,7 +386,7 @@ export default function Home() {
       {
         value: "Nhà Trai (Ninh Thuận)",
         label: "Nhà trai · Ninh Thuận",
-        date: "29 · 01 · 2026 · 18:00",
+                      date: "29 · 01 · 2026 · 18:00",
       },
       {
         value: "Nhà Gái (Phú Yên)",
@@ -427,6 +475,21 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
+  // Preload gallery assets so modal opens without re-fetching
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const preloadedImages = collageImages.map((src) => {
+      const img = new window.Image();
+      img.src = src;
+      return img;
+    });
+    return () => {
+      preloadedImages.forEach((img) => {
+        img.src = "";
+      });
+    };
+  }, []);
+
   // Background music autoplay
   useEffect(() => {
     const audio = audioRef.current;
@@ -466,6 +529,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!letterOpened) return;
     if (typeof window === "undefined") return;
     gsap.registerPlugin(ScrollTrigger);
     const section = journeyAlbumRef.current;
@@ -513,7 +577,7 @@ export default function Home() {
     return () => {
       mm.revert();
     };
-  }, []);
+  }, [letterOpened]);
 
   const handleStoryClick = (story: { src: string; caption?: string }) => {
     setStoryModal(story);
@@ -539,42 +603,39 @@ export default function Home() {
     const trimmedMessage = attendanceForm.message.trim();
     if (!trimmedName || !trimmedMessage) return;
     const selectedAttend = attendanceForm.joinAt.join(", ") || "Chưa chọn";
+    const guestCount = attendanceForm.guests;
     setFormStatus("loading");
     try {
-      const [rsvpResponse, messageResponse] = await Promise.all([
-        fetch("/api/rsvp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: trimmedName,
-            joinAt: attendanceForm.joinAt,
-          }),
+      const messageResponse = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: trimmedName,
+          message: trimmedMessage,
         }),
-        fetch("/api/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: trimmedName,
-            message: trimmedMessage,
-          }),
-        }),
-      ]);
+      });
 
-      if (!rsvpResponse.ok || !messageResponse.ok) {
-        throw new Error("Failed to save RSVP or blessing");
+      if (!messageResponse.ok) {
+        throw new Error("Failed to save blessing");
       }
 
-      if (googleSheetsWebhookUrl) {
-        fetch(googleSheetsWebhookUrl, {
+      if (sheetDbWebhookUrl) {
+        fetch(sheetDbWebhookUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: trimmedName,
-            attend: selectedAttend,
-            message: trimmedMessage,
+            data: [
+              {
+                Name: trimmedName,
+                Attend: selectedAttend,
+                Message: trimmedMessage,
+                Guests: guestCount,
+                Date: new Date().toISOString(),
+              },
+            ],
           }),
         }).catch((error) => {
-          console.warn("Google Sheets sync failed:", error);
+          console.warn("SheetDB sync failed:", error);
         });
       }
 
@@ -586,7 +647,12 @@ export default function Home() {
         setMessages(refreshed.messages ?? blessingPlaceholders);
       }
 
-      setAttendanceForm({ name: "", joinAt: [], message: "" });
+      setAttendanceForm({
+        name: "",
+        joinAt: [],
+        message: "",
+        guests: "1",
+      });
       setFormStatus("success");
     } catch (error) {
       console.error(error);
@@ -594,13 +660,58 @@ export default function Home() {
     }
   };
 
+  const heartEmojis = ['❤️', '💙', '💜', '💛', '💚', '🧡', '🤎', '🖤', '🤍', '💖', '💘', '💝'];
+
+  function openLetter() {
+    setLetterOpened(true);
+      document.getElementById("letter")?.classList.add("show");
+      document.getElementById("mailWrapper")?.classList.add("hide");
+      startContinuousHeartRain();
+  }
+
+  function startContinuousHeartRain() {
+      setInterval(() => {
+          createHeart();
+      }, 200); // Hearts keep falling every 200ms
+  }
+
+  function createHeart() {
+      const heartContainer = document.getElementById("heartRain");
+      const heart = document.createElement("span");
+      heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 2) + "s"; // Random fall speed
+      heartContainer?.appendChild(heart);
+
+      // Remove heart after it falls
+      setTimeout(() => heart.remove(), 5000);
+  }
+
   return (
+
+    <>
+    {!letterOpened && (
+<div className="animation-love anibg-sm sm:anibg flex flex-col items-center justify-center h-[30vh]">
+      <div className="mail-wrapper top30 flex flex-col items-center justify-center pt-10" id="mailWrapper" onClick={openLetter}>
+        <div className="heart">💌</div>
+        <div className="font-be">Thiệp cưới</div>
+        <div className="font">Quốc Hoàng & Ngọc Đăng</div>
+    </div>
+
+    <div className="letter" id="letter">
+        <p>You&apos;re the reason hearts keep falling all around! 💕</p>
+        <div className="small-hearts">
+            <span>❤️</span><span>💖</span><span>💘</span>
+        </div>
+    </div>
+    </div>
+    )}
+{letterOpened && (
     <div className="relative overflow-hidden">
       <audio ref={audioRef} src={musicUrl} loop preload="auto" autoPlay playsInline />
 
       <div className="pointer-events-none absolute inset-0 opacity-60 hero-grid" />
       <div className="absolute inset-x-0 top-0 h-[520px] bg-linear-to-b from-rose-200/20 to-transparent blur-3xl" />
-
       <header className="sticky hidden md:block top-0 z-40 w-full border-b border-blush-100 bg-white/80 text-midnight-900 backdrop-blur-xl shadow-sm">
         <div className="mx-auto max-w-6xl px-6 py-4">
           <nav className="flex items-center justify-between gap-4">
@@ -608,9 +719,7 @@ export default function Home() {
               <span className="rounded-full border border-blush-200 bg-blush-50 px-3 py-1 text-xs uppercase tracking-[0.3em] text-blush-500">
                 QH & ND
               </span>
-              <p className="hidden text-sm text-slate-500 sm:block">
-                Forever begins · 24.01.2026
-              </p>
+
             </div>
             <div className="hidden gap-3 text-sm md:flex">
               {navItems.map((item) => (
@@ -654,10 +763,14 @@ export default function Home() {
           {heroSlides.map((slide, index) => (
             <motion.div
               key={slide.src}
-              className="absolute inset-0 w-full md:w-[50%] py-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: activeHeroSlide === index ? 1 : 0 }}
-              transition={{ duration: 1.2 }}
+              className="absolute inset-0 w-full md:w-[60%] py-10"
+              initial={{ opacity: 0, scale: 1.08 }}
+              animate={
+                activeHeroSlide === index
+                  ? { opacity: 1, scale: 1 }
+                  : { opacity: 0, scale: 1.08 }
+              }
+              transition={{ duration: 1.2, ease: "easeInOut" }}
             >
               <Image
                 src={slide.src}
@@ -665,28 +778,29 @@ export default function Home() {
                 fill
                 priority={index === 0}
                 sizes="100vw"
-                className="object-contain md:object-cover img-hero-slide"
+                className="object-contain md:object-contain img-hero-slide"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-rose-900/60 via-rose-700/50 to-transparent" />
+          <div className="absolute inset-0 sm:bg-linear-to-r sm:from-rose-900/60 sm:via-rose-700/50 sm:to-transparent to-transparent" />
             </motion.div>
           ))}
         </div>
-        <div className="relative mx-auto flex max-w-7xl flex-col gap-10 py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
+        <div className="relative mx-auto pt-[650px] sm:pt-24  flex max-w-7xl flex-col gap-10 py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
           <motion.div
             className="flex-1 space-y-6 px-4 md:px-0"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <p className="text-md uppercase font-semibold tracking-[0.5em] text-white/80">
+            {/* <div className="h-[400px] md:hidden" /> */}
+            <p className="text-md hidden md:block uppercase font-semibold tracking-[0.5em] text-white/80">
               Save the Date
             </p>
-            <h1 className="font-script text-5xl leading-tight sm:text-6xl w-fit">
-              <span className="text-6xl sm:text-7xl">Quốc&nbsp;Hoàng</span>
+            <h1 className="font-script hidden md:block text-5xl leading-tight sm:text-6xl w-fit ml-30">
+              <span className="text-6xl sm:text-7xl font-wedding">Quốc&nbsp;Hoàng</span>
               <div className="text-blush-200 text-5xl sm:text-6xl text-center">&hearts;</div>
-              <span className="text-6xl sm:text-7xl">Ngọc&nbsp;Đăng</span>
+              <span className="text-6xl sm:text-7xl font-wedding">Ngọc&nbsp;Đăng</span>
             </h1>
-            <p className="max-w-xl text-md md:text-lg text-white">
+            <p className="max-w-xl hidden md:block  text-md md:text-lg text-white italic">
               Hành trình yêu thương của chúng mình tròn đầy hơn khi có sự hiện
               diện của bạn. Cảm ơn vì sẽ đến và gửi lời chúc cho ngày vui này.
             </p>
@@ -716,7 +830,7 @@ export default function Home() {
               </motion.div>
             </div>
             
-            <div className="rounded-3xl border border-white/30 bg-white/10 p-6 backdrop-blur">
+            <div className="rounded-3xl border border-white/30 bg-white/10 p-6 backdrop-blur  max-w-[480px]">
               <p className="text-sm uppercase tracking-[0.4em] text-white/80">
                 Ngày chung đôi
               </p>
@@ -757,6 +871,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            
           </motion.div>
 
           <motion.div
@@ -780,7 +895,7 @@ export default function Home() {
 
       {storyModal && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 px-4 py-10"
+          className="fixed inset-0 z-70 flex items-center justify-center bg-black/80 px-4 py-10"
           onClick={(event) => {
             if (event.target === event.currentTarget) setStoryModal(null);
           }}
@@ -816,6 +931,7 @@ export default function Home() {
           contentClassName="grid gap-10 px-5 py-8 sm:p-10 lg:grid-cols-2 bg-white/70"
           overlayClassName="from-white/95 via-rose-50/70 to-white/95"
         >
+          <div className="heart-rain" id="heartRain"></div>
           <motion.div className="space-y-6" {...fadeIn()}>
             <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
               Our Stories
@@ -895,7 +1011,7 @@ export default function Home() {
               <motion.button
                 type="button"
                 key={`${image.src}-${index}`}
-                className="relative h-100 w-60 sm:h-120 sm:w-70 flex-shrink-0 cursor-pointer overflow-hidden rounded-3xl shadow-lg"
+            className="relative h-100 w-80 sm:h-170 sm:w-100 shrink-0 cursor-pointer overflow-hidden rounded-3xl shadow-lg"
                 whileHover={{ scale: 1.04 }}
                 onClick={() =>
                   setStoryModal({ src: image.src, caption: image.label })
@@ -937,7 +1053,7 @@ export default function Home() {
                 {...fadeIn(index * 0.1)}
                 whileHover={{ scale: 1.01, y: -8 }}
               >
-                <div className="mb-4 flex-shrink-0 text-center text-rose-900 lg:mb-0">
+        <div className="mb-4 shrink-0 text-center text-rose-900 lg:mb-0">
                   <p className="text-sm uppercase tracking-[0.4em] text-blush-400">
                     {step.date}
                   </p>
@@ -1032,14 +1148,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* <ParallaxSection
-          id="moments"
-          backgroundSrc="/media/DAG_4135.jpg"
-          className="mt-16"
-          contentClassName="space-y-8 px-4 py-10 sm:px-8"
-          overlayClassName="from-white/95 via-rose-50/60 to-white/95"
+        <section
+          id="album"
+          className="full-bleed mt-16 bg-linear-to-b from-white via-rose-50/70 to-white px-4 py-12 sm:px-8"
         >
-          <div className="text-center">
+          <motion.div
+            className="mx-auto max-w-6xl text-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={galleryTextAnimation}
+          >
             <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
               Gallery
             </p>
@@ -1050,35 +1169,40 @@ export default function Home() {
               Tụi mình gom thêm những khung hình hậu trường để bạn cảm nhận rõ hơn
               nhịp thở của hành trình yêu.
             </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {collageImages.map((image) => (
-              <motion.div
-                key={image.src}
-                className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-2 shadow-glow-soft"
-                whileHover={{ y: -6 }}
-              >
-                <div className="relative h-64 w-full overflow-hidden rounded-2xl sm:h-72">
+          </motion.div>
+          <div className="mx-auto mt-10 w-full max-w-7xl">
+            <div className="gallery">
+              {collageImages.map((image) => (
+                <motion.button
+                  type="button"
+                  key={image}
+                  className="group block w-full cursor-zoom-in focus:outline-none"
+                  whileHover={{ y: -6 }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.25 }}
+                  variants={galleryItemAnimation}
+                  onClick={() =>
+                    setStoryModal({
+                      src: image,
+                      caption: "Khoảnh khắc yêu thương",
+                    })
+                  }
+                >
                   <Image
-                    src={image.src}
-                    alt={image.title}
-                    fill
-                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 90vw"
-                    className="object-cover transition duration-700 group-hover:scale-105"
+                    src={image}
+                    alt="Khoảnh khắc yêu thương"
+                    width={1600}
+                    height={2000}
+                    loading="lazy"
+                    className="max-h-full w-auto rounded-2xl object-contain transition duration-700 group-hover:scale-105"
+                    sizes="(min-width: 1280px) 18vw, (min-width: 768px) 40vw, 90vw"
                   />
-                  <div className="absolute inset-x-2 bottom-2 rounded-2xl bg-white/85 px-3 py-2 text-xs uppercase tracking-[0.3em] text-rose-400 backdrop-blur">
-                    <p className="font-semibold tracking-[0.25em] text-rose-600">
-                      {image.title}
-                    </p>
-                    <p className="mt-1 text-[0.6rem] tracking-[0.3em] text-slate-500">
-                      {image.detail}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.button>
+              ))}
+            </div>
           </div>
-        </ParallaxSection> */}
+        </section>
 
         <ParallaxSection
           id="party"
@@ -1091,7 +1215,7 @@ export default function Home() {
               Party
             </p>
             <h2 className="mt-2 font-display text-shadow-lg text-3xl  from-rose-500 to-rose-300 sm:text-4xl">
-              <span className="bg-gradient-to-r text-shadow-lg text-[#f1449b] bg-clip-text uppercase font-bold">
+              <span className="bg-linear-to-r text-shadow-lg text-[#f1449b] bg-clip-text uppercase font-bold">
               Hẹn gặp bạn tại{" "} hai miền yêu thương
               </span>
             </h2>
@@ -1127,157 +1251,181 @@ export default function Home() {
           </div>
         </ParallaxSection>
 
-        <section id="blessings" className="mt-24">
-          <motion.div
-            className="rounded-[32px] border border-blush-100 bg-white p-6 shadow-glow-soft sm:p-8"
-            {...fadeIn()}
-          >
-            <div className="text-center">
-              <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
-                Lời chúc gần đây
-              </p>
-              <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
-                Lan tỏa yêu thương
-              </h2>
-              <p className="mt-2 text-sm text-slate-500">
-                Điền Lời chúc trong form xác nhận tham dự, lời nhắn của bạn sẽ xuất hiện tại đây.
-              </p>
-            </div>
-            <div className="mt-8 flex flex-col gap-4">
-              {loadingMessages ? (
-                <p className="text-center text-slate-500">Đang tải lời chúc...</p>
-              ) : (
-                messages.map((blessing, index) => (
-                  <motion.div
-                    key={`${blessing.name}-${index}`}
-                    className="rounded-3xl border border-blush-100 bg-rose-50/70 p-4"
-                    whileHover={{ scale: 1.01, y: -4 }}
+        <section className="mt-24 flex flex-col gap-8 lg:flex-row" id="rsvp">
+          <div className="lg:w-1/2">
+            <ParallaxSection
+              backgroundSrc="/media/DAG_4224.jpg"
+              className="rounded-[32px]"
+              contentClassName="px-5 py-8 sm:p-10"
+            >
+              <div className="text-center">
+                <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+                  Confirm Attendance
+                </p>
+                <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
+                  Bạn có thể tham dự chứ?
+                </h2>
+              </div>
+              <form className="mt-10 space-y-8" onSubmit={handleRsvpSubmit}>
+                <div>
+                  <label className="text-sm sm:text-base ">Họ và tên</label>
+                  <input
+                    type="text"
+                    value={attendanceForm.name}
+                    onChange={(event) =>
+                      setAttendanceForm((prev) => ({
+                        ...prev,
+                        name: event.target.value,
+                      }))
+                    }
+                    required
+                    className="mt-2 w-full rounded-2xl border border-blush-100 bg-white px-4 py-3 text-midnight-900 placeholder:text-rose-200 focus:border-blush-300 focus:outline-none"
+                    placeholder="Nhập tên để tụi mình dễ nhận ra nhé"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm sm:text-base ">Bạn sẽ tham dự ở đâu?</p>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    {joinOptions.map((option) => {
+                      const selected = attendanceForm.joinAt.includes(option.value);
+                      return (
+                        <motion.button
+                          type="button"
+                          key={option.value}
+                          onClick={() => toggleJoinOption(option.value)}
+                          className={`rounded-2xl border px-5 py-4 text-left transition ${
+                            selected
+                              ? "border-rose-500 bg-rose-50 text-rose-900 shadow-[0_12px_30px_rgba(255,115,147,0.3)]"
+                              : "border-white/40 bg-white/80 text-slate-600 hover:border-rose-200"
+                          }`}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <p className="font-semibold">{option.label}</p>
+                          <p className="text-xs uppercase tracking-[0.4em] text-rose-300">
+                            {option.date}
+                          </p>
+                          <p className="mt-1 text-xs uppercase tracking-[0.4em] text-rose-400">
+                            {selected ? "ĐÃ CHỌN" : "CHỌN"}
+                          </p>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm sm:text-base">
+                    Số lượng người tham dự
+                  </label>
+                  <select
+                    value={attendanceForm.guests}
+                    onChange={(event) =>
+                      setAttendanceForm((prev) => ({
+                        ...prev,
+                        guests: event.target.value,
+                      }))
+                    }
+                    className="mt-2 w-full rounded-2xl border border-blush-100 bg-white px-4 py-3 text-midnight-900 focus:border-blush-300 focus:outline-none"
                   >
-                    <p
-                      className="text-sm font-semibold text-rose-900"
-                      style={{ textShadow: "0 2px 6px rgba(149, 64, 85, 0.25)" }}
+                    <option value="1">1 người</option>
+                    <option value="2">2 người</option>
+                    <option value="3">3 người</option>
+                    <option value="4">4 người</option>
+                    <option value="other">Khác</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm sm:text-base ">Lời chúc gửi đến Chú rể và Cô dâu</label>
+                  <textarea
+                    value={attendanceForm.message}
+                    onChange={(event) =>
+                      setAttendanceForm((prev) => ({
+                        ...prev,
+                        message: event.target.value,
+                      }))
+                    }
+                    required
+                    rows={4}
+                    className="mt-2 w-full rounded-2xl border border-blush-100 bg-white px-4 py-3 text-midnight-900 placeholder:text-rose-200 focus:border-blush-300 focus:outline-none"
+                    placeholder="Viết vài dòng yêu thương để tụi mình lưu giữ nhé..."
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={formStatus === "loading"}
+                  className="group w-full rounded-full bg-linear-to-r from-rose-500 via-rose-400 to-rose-300 px-6 py-4 text-lg font-semibold text-white shadow-[0_18px_45px_rgba(255,115,147,0.45)] transition hover:-translate-y-1 hover:shadow-[0_25px_55px_rgba(255,115,147,0.55)] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <span className="inline-flex items-center justify-center gap-2">
+                    {formStatus === "loading" ? "Đang xác nhận..." : "Xác nhận tham dự"}
+                    <span className="text-sm transition group-hover:translate-x-1">
+                      ✨
+                    </span>
+                  </span>
+                </button>
+                {formStatus === "success" && (
+                  <p className="text-center text-sm text-emeraldFog">
+                    Đã ghi nhận! Hẹn bạn trong ngày vui.
+                  </p>
+                )}
+                {formStatus === "error" && (
+                  <p className="text-center text-sm text-red-300">
+                    Gửi chưa thành công, thử lại giúp tụi mình nhé.
+                  </p>
+                )}
+              </form>
+            </ParallaxSection>
+          </div>
+          <div className="lg:w-1/2" id="blessings">
+            <motion.div
+              className="rounded-[32px] border border-blush-100 bg-white p-6 shadow-glow-soft sm:p-8"
+              {...fadeIn()}
+            >
+              <div className="text-center">
+                <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+                  Lời chúc gần đây
+                </p>
+                <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
+                  Lan tỏa yêu thương
+                </h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  Điền Lời chúc trong form xác nhận tham dự, lời nhắn của bạn sẽ xuất hiện tại đây.
+                </p>
+              </div>
+              <div className="mt-8 flex max-h-[520px] flex-col gap-4 overflow-auto pr-2">
+                {loadingMessages ? (
+                  <p className="text-center text-slate-500">Đang tải lời chúc...</p>
+                ) : (
+                  messages.map((blessing, index) => (
+                    <motion.div
+                      key={`${blessing.name}-${index}`}
+                      className="rounded-3xl border border-blush-100 bg-rose-50/70 p-4"
+                      whileHover={{ scale: 1.01, y: -4 }}
                     >
-                      {blessing.name || "Bạn ẩn danh"}
-                    </p>
-                    <p
-                      className="mt-2 text-sm text-slate-600"
-                      style={{ textShadow: "0 1px 4px rgba(0, 0, 0, 0.08)" }}
-                    >
-                      “{blessing.message}”
-                    </p>
-                    {blessing.timestamp && (
-                      <p className="mt-2 text-xs uppercase tracking-[0.3em] text-rose-300">
-                        {new Date(blessing.timestamp).toLocaleDateString()}
+                      <p
+                        className="text-sm font-semibold text-rose-900"
+                        style={{ textShadow: "0 2px 6px rgba(149, 64, 85, 0.25)" }}
+                      >
+                        {blessing.name || "Bạn ẩn danh"}
                       </p>
-                    )}
-                  </motion.div>
-                ))
-              )}
-            </div>
-          </motion.div>
+                      <p
+                        className="mt-2 text-sm text-slate-600"
+                        style={{ textShadow: "0 1px 4px rgba(0, 0, 0, 0.08)" }}
+                      >
+                        “{blessing.message}”
+                      </p>
+                      {blessing.timestamp && (
+                        <p className="mt-2 text-xs uppercase tracking-[0.3em] text-rose-300">
+                          {new Date(blessing.timestamp).toLocaleDateString()}
+                        </p>
+                      )}
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </div>
         </section>
 
-        <ParallaxSection
-          id="rsvp"
-          backgroundSrc="/media/DAG_4224.jpg"
-          className="mt-20 rounded-[32px]"
-          contentClassName="px-5 py-8 sm:p-10"
-        >
-          <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
-              Confirm Attendance
-            </p>
-            <h2 className="mt-3 font-display font-bold text-3xl text-rose-200 sm:text-4xl">
-              Bạn có thể tham dự chứ?
-            </h2>
-          </div>
-          <form className="mx-auto mt-10 max-w-3xl space-y-8" onSubmit={handleRsvpSubmit}>
-            <div>
-              <label className="text-sm sm:text-base ">Họ và tên</label>
-              <input
-                type="text"
-                value={attendanceForm.name}
-                onChange={(event) =>
-                  setAttendanceForm((prev) => ({
-                    ...prev,
-                    name: event.target.value,
-                  }))
-                }
-                required
-                className="mt-2 w-full rounded-2xl border border-blush-100 bg-white px-4 py-3 text-midnight-900 placeholder:text-rose-200 focus:border-blush-300 focus:outline-none"
-                placeholder="Nhập tên để tụi mình dễ nhận ra nhé"
-              />
-            </div>
-            <div>
-              <p className="text-sm sm:text-base ">
-                Bạn sẽ tham dự ở đâu? <span className="text-rose-300"></span>
-              </p>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                {joinOptions.map((option) => {
-                  const selected = attendanceForm.joinAt.includes(option.value);
-                  return (
-                    <motion.button
-                      type="button"
-                      key={option.value}
-                      onClick={() => toggleJoinOption(option.value)}
-                      className={`rounded-2xl border px-5 py-4 text-left transition ${
-                        selected
-                          ? "border-rose-500 bg-rose-50 text-rose-900 shadow-[0_12px_30px_rgba(255,115,147,0.3)]"
-                          : "border-white/40 bg-white/80 text-slate-600 hover:border-rose-200"
-                      }`}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <p className="font-semibold">{option.label}</p>
-                      <p className="text-xs uppercase tracking-[0.4em] text-rose-300">
-                        {option.date}
-                      </p>
-                      <p className="mt-1 text-xs uppercase tracking-[0.4em] text-rose-400">
-                        {selected ? "ĐÃ CHỌN" : "CHỌN"}
-                      </p>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-            <div>
-              <label className="text-sm sm:text-base ">Lời chúc gửi đến Chú rể và Cô dâu</label>
-              <textarea
-                value={attendanceForm.message}
-                onChange={(event) =>
-                  setAttendanceForm((prev) => ({
-                    ...prev,
-                    message: event.target.value,
-                  }))
-                }
-                required
-                rows={4}
-                className="mt-2 w-full rounded-2xl border border-blush-100 bg-white px-4 py-3 text-midnight-900 placeholder:text-rose-200 focus:border-blush-300 focus:outline-none"
-                placeholder="Viết vài dòng yêu thương để tụi mình lưu giữ nhé..."
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={formStatus === "loading"}
-              className="group w-full rounded-full bg-gradient-to-r from-rose-500 via-rose-400 to-rose-300 px-6 py-4 text-lg font-semibold text-white shadow-[0_18px_45px_rgba(255,115,147,0.45)] transition hover:-translate-y-1 hover:shadow-[0_25px_55px_rgba(255,115,147,0.55)] disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              <span className="inline-flex items-center justify-center gap-2">
-                {formStatus === "loading" ? "Đang xác nhận..." : "Xác nhận tham dự"}
-             
-              </span>
-            </button>
-            {formStatus === "success" && (
-              <p className="text-center text-sm text-emeraldFog">
-                Đã ghi nhận! Hẹn bạn trong ngày vui.
-              </p>
-            )}
-            {formStatus === "error" && (
-              <p className="text-center text-sm text-red-300">
-                Gửi chưa thành công, thử lại giúp tụi mình nhé.
-              </p>
-            )}
-          </form>
-        </ParallaxSection>
       </main>
 
       <footer className="border-t border-blush-100 bg-white text-center text-sm text-rose-500">
@@ -1299,5 +1447,10 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  );
-}
+    )}
+      </>
+
+
+
+    );
+  }

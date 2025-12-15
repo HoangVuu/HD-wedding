@@ -12,7 +12,9 @@ const SHEET_RANGE =
   process.env.GOOGLE_SHEETS_CONGRATS_RANGE ?? "Blessings!A:C";
 const SHEETS_WEBHOOK_URL =
   process.env.GOOGLE_SHEETS_WEBHOOK_URL ||
-  process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEBHOOK_URL;
+  process.env.NEXT_PUBLIC_SHEETDB_URL ||
+  process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEBHOOK_URL ||
+  "https://sheetdb.io/api/v1/c6eefggtbyk8s";
 
 const fallbackMessages = [
   {
@@ -89,10 +91,15 @@ async function fetchMessagesFromWebhook() {
             (obj.note as string) ||
             "";
           const attend = (obj.attend as string) || (obj.Attend as string) || "";
+          const timestamp =
+            (obj.timestamp as string) ||
+            (obj.Date as string) ||
+            (obj.date as string) ||
+            undefined;
           return {
             name: name.trim() || "Bạn ẩn danh",
             message: [attend, message].filter(Boolean).join(" · "),
-            timestamp: (obj.timestamp as string) || undefined,
+            timestamp,
           };
         }
         return null;
@@ -146,6 +153,25 @@ export async function POST(request: Request) {
       ]);
     } else {
       console.warn("Google Sheets is not configured. Message not persisted.");
+    }
+
+    if (SHEETS_WEBHOOK_URL) {
+      fetch(SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          data: [
+            {
+              Name: safeName,
+              Message: safeMessage,
+              Attend: "",
+              Date: new Date().toISOString(),
+            },
+          ],
+        }),
+      }).catch((error) => {
+        console.warn("SheetDB message sync failed:", error);
+      });
     }
 
     const messages = await readMessagesFromSheet();
