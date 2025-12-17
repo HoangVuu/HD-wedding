@@ -23,12 +23,6 @@ const fallbackMessages = [
     timestamp: new Date().toISOString(),
   },
   {
-    name: "Team NYC",
-    message:
-      "Ngày vui đang đếm ngược, tụi mình luôn ở đây cổ vũ Quốc Hoàng & Ngọc Đăng.",
-    timestamp: new Date().toISOString(),
-  },
-  {
     name: "Chung",
     message:
       "Chúc hai bạn sống trong ngọt ngào và bình yên mãi mãi!",
