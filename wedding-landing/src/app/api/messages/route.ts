@@ -28,6 +28,12 @@ const fallbackMessages = [
       "Ngày vui đang đếm ngược, tụi mình luôn ở đây cổ vũ Quốc Hoàng & Ngọc Đăng.",
     timestamp: new Date().toISOString(),
   },
+  {
+    name: "Chung",
+    message:
+      "Chúc hai bạn sống trong ngọt ngào và bình yên mãi mãi!",
+    timestamp: new Date().toISOString(),
+  },
 ];
 
 const normalizeStringList = (value: unknown) => {
