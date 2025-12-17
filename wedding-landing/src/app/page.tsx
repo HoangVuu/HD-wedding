@@ -111,7 +111,7 @@ src: "/media/t5-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/t6-JPG.jpg",
+  src: "/media/t6-min.JPG",
   label: "Bình minh Tuy Hòa",
 },
 {
