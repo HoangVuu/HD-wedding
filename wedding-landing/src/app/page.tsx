@@ -726,7 +726,7 @@ export default function Home() {
 
 
 <div className="flex flex-col items-center justify-center bg-over">
-<div className="font size-big">Quốc Hoàng & Ngọc Đăng</div>
+<div className="font size-big text-center">Quốc Hoàng & Ngọc Đăng</div>
 <hr style={{ height: "2px", backgroundColor: "black", border: "none", margin: "1rem 0", fontFamily: "'UTM-Azkia.ttf', sans-serif" }} />
      <div className="intro-title">Thư mời thiệp cưới</div>
       <div className="mail-wrapper top30 flex flex-col items-center justify-center pt-10" id="mailWrapper" onClick={openLetter}>
