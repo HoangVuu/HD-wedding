@@ -786,7 +786,7 @@ export default function Home() {
 
       <section
         id="hero"
-        className="relative isolate overflow-hidden text-white pt-[150px]"
+        className="relative isolate overflow-hidden text-white pt-[170px]"
       >
         <div className="absolute inset-0 bg-[#930014] py-20">
           {heroSlides.map((slide, index) => (
@@ -813,7 +813,7 @@ export default function Home() {
             </motion.div>
           ))}
         </div>
-        <div className="relative mx-auto sm:pt-24 flex max-w-7xl flex-col gap-10 py-16 sm:py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
+        <div className="relative mx-auto sm:pt-24 flex max-w-7xl flex-col gap-10 pb-10 sm:py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
           <motion.div
             className="flex-1 space-y-6 px-4 md:px-0"
             initial={{ opacity: 0, y: 40 }}
