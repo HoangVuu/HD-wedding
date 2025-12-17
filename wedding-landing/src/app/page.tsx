@@ -203,6 +203,7 @@ const journeyAlbumSlides = [
   },
   {
     src: "/media/journey/cauhon.jpg",
+    date: "30.10.2024",
     title: "Cầu hôn",
     caption: "Khoảnh khắc cầu hôn xúc động, lời hứa cho chặng đường sắp tới.",
   },
