@@ -103,7 +103,7 @@ const marqueeImages = [{
   src: "/media/t3-min.jpg",
   label: "Hương hoa giấy",
 }, {
-  src: "/media/t4-min.jpg",
+  src: "/media/t4-min.JPG",
   label: "Bình minh Tuy Hòa",
 },
 {
@@ -111,11 +111,11 @@ src: "/media/t5-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/t6-min.jpg",
+  src: "/media/t6-JPG.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/t7-min.jpg",
+  src: "/media/t7-min.JPG",
   label: "Bình minh Tuy Hòa",
 },
 {
@@ -127,7 +127,7 @@ src: "/media/t5-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/t10-min.jpg",
+  src: "/media/t10-min.JPG",
   label: "Bình minh Tuy Hòa",
 },
 {
