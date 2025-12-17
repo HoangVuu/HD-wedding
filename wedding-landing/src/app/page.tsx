@@ -980,7 +980,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="mt-4 text-base text-emerald-900/80">
-                Chàng trai tràn đầy năng lượng tích cực, luôn
+                Chàng trai tràn đầy năng lượng tích cực, lí trí nhưng ấm áp, luôn
                 mang theo nụ cười khi đồng hành cùng người thương.
               </p>
             </motion.div>
@@ -1033,8 +1033,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="mt-4 text-base text-emerald-900/80">
-                Nàng thơ dịu dàng với trái tim giàu cảm xúc, luôn nâng niu từng
-                khoảnh khắc bình yên của hành trình yêu.
+                Nàng thơ dịu dàng với trái tim giàu cảm xúc, đôi khi hờn dỗi nhưng luôn đầy ắp tiếng cười.
               </p>
             </motion.div>
           </div>
@@ -1050,11 +1049,11 @@ export default function Home() {
               Chuyện chúng mình
             </h2>
             <p className="font-arial text-slate-600">
-            Quốc Hoàng – chàng trai đầy lý trí nhưng ấm áp, và Ngọc Đăng – nàng dịu dàng mang trái tim nhiều yêu thương.
+            Quốc Hoàng – chàng trai đầy lý trí nhưng ấm áp, và Ngọc Đăng – nàng dịu dàng mang trái tim nhiều yêu thương và luôn làm mọi người xung quanh cười.
             Hai hành tinh tưởng chừng khác biệt, mỗi người mang một nhịp sống riêng, lại bất ngờ tìm thấy quỹ đạo chung bằng sự chân thành. Giữa những bộn bề công việc và nhịp sống vội vã, chúng mình vẫn chọn dành thời gian cho nhau — để lắng nghe, để thấu hiểu và để sẻ chia những điều nhỏ bé nhất trong cuộc sống.
             </p>
             <p className="font-arial text-slate-600">
-            Tình yêu của chúng mình không bắt đầu từ những điều quá lớn lao, mà lớn dần lên từ những khoảnh khắc rất đỗi bình thường. Là những lần cùng nhau dạo bước trên bãi cát lúc chiều muộn, nghe sóng biển thì thầm; là những bữa ăn giản dị tự tay nấu, đôi khi vụng về nhưng luôn đầy ắp tiếng cười; là những buổi tối chậm rãi kể cho nhau nghe về một ngày đã qua.
+            Tình yêu của chúng mình không bắt đầu từ những điều quá lớn lao, mà lớn dần lên từ những khoảnh khắc rất đỗi bình thường. Là những lần cùng nhau dạo quanh thành phô lúc chiều muộn, nghe sóng biển thì thầm; là những bữa ăn giản dị tự tay nấu, đôi khi vụng về nhưng luôn đầy ắp tiếng cười; là những buổi tối chậm rãi kể cho nhau nghe về một ngày đã qua.
             </p>
             <p className="font-arial text-slate-600">
             Chúng mình tin rằng hạnh phúc không cần phải rực rỡ, chỉ cần đủ ấm. Là khi có một người để trở về, một người sẵn sàng ở bên dù vui hay buồn, thành công hay chông chênh. Từ hai con người độc lập, chúng mình học cách đồng hành — tôn trọng sự khác biệt, trân trọng điểm chung và kiên nhẫn cùng nhau trưởng thành.
@@ -1202,7 +1201,7 @@ export default function Home() {
                 }}
                 className="journey-fade-slide absolute inset-0 flex h-full flex-col justify-between rounded-[32px]"
               >
-                <div className="relative h-[85%] w-full overflow-hidden rounded-[28px]">
+                <div className="relative  w-full aspect-[5/3] overflow-hidden rounded-[28px]">
                   <Image
                     src={slide.src}
                     alt={slide.title}
