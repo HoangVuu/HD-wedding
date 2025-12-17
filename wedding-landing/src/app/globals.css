@@ -69,3 +69,66 @@ section {
     );
   background-color: #fff4f7;
 }
+
+
+
+
+#w-1rsc4zcz.animation .image-block-css {
+  animation-name: pulse;
+  -webkit-animation-name: pulse;
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  animation-duration: 3s;
+  -webkit-animation-duration: 3s;
+}
+
+@media screen and (max-width: 767px) {
+#w-1rsc4zcz .image-block-css {
+  border-color: rgba(229, 231, 235, 1);
+  border-style: solid;
+  border-width: 0px;
+  filter: contrast(0%) grayscale(43%) hue-rotate(0deg) invert(0%) saturate(0%) sepia(0%) opacity(100%) brightness(200%) blur(0px);
+  position: absolute;
+    z-index: null;
+  }
+}
+
+.image-block-css {
+  overflow: hidden;
+}
+.p-relative {
+  position: relative;
+}
+
+.mask-position {
+  -webkit-mask-position: 0% 0%;
+}
+.full-mask-size {
+  -webkit-mask-size: 100% 100%;
+}
+.full-width {
+  width: 100%;
+}
+.full-height {
+  height: 100%;
+}-block-css {
+  overflow: hidden;
+}
+
+@media screen and (max-width: 767px) {
+  #w-1rsc4zcz .image-background {
+      height: 155px;
+      top: 0px;
+      left: 0px;
+      background: center center / cover no-repeat scroll content-box border-box url("/media/thank-you.webp");
+      --type: 0;
+  }
+}
+.image-background, .image-background-compare {
+  margin: 0 auto;
+}
+.p-absolute {
+  position: absolute;
+}

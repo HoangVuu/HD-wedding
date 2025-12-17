@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 
 const SHEET_ID = process.env.GOOGLE_SHEETS_CONGRATS_ID;
 const SHEET_RANGE =
-  process.env.GOOGLE_SHEETS_CONGRATS_RANGE ?? "Blessings!A:C";
+  process.env.GOOGLE_SHEETS_CONGRATS_RANGE ?? "Blessings!A:E";
 const SHEETS_WEBHOOK_URL =
   process.env.GOOGLE_SHEETS_WEBHOOK_URL ||
   process.env.NEXT_PUBLIC_SHEETDB_URL ||
@@ -30,6 +30,19 @@ const fallbackMessages = [
   },
 ];
 
+const normalizeStringList = (value: unknown) => {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (typeof item === "string" ? item.trim() : ""))
+      .filter(Boolean)
+      .join(", ");
+  }
+  if (typeof value === "string") {
+    return value.trim();
+  }
+  return "";
+};
+
 async function readMessagesFromSheet() {
   const webhookMessages = await fetchMessagesFromWebhook();
   if (webhookMessages.length) {
@@ -44,7 +57,9 @@ async function readMessagesFromSheet() {
     .map((row) => ({
       name: (row[0] as string) || "Bạn ẩn danh",
       message: (row[1] as string) || "",
-      timestamp: row[2] as string | undefined,
+      timestamp:
+        (row.length > 4 ? (row[4] as string) : undefined) ??
+        (row.length > 2 ? (row[2] as string) : undefined),
     }))
     .filter((item) => item.message);
 }
@@ -90,7 +105,6 @@ async function fetchMessagesFromWebhook() {
             (obj.Message as string) ||
             (obj.note as string) ||
             "";
-          const attend = (obj.attend as string) || (obj.Attend as string) || "";
           const timestamp =
             (obj.timestamp as string) ||
             (obj.Date as string) ||
@@ -98,7 +112,7 @@ async function fetchMessagesFromWebhook() {
             undefined;
           return {
             name: name.trim() || "Bạn ẩn danh",
-            message: [attend, message].filter(Boolean).join(" · "),
+            message: message,
             timestamp,
           };
         }
@@ -130,7 +144,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { name, message } = await request.json();
+    const { name, message, attend, guests } = await request.json();
 
     if (!message || typeof message !== "string") {
       return NextResponse.json(
@@ -144,12 +158,17 @@ export async function POST(request: Request) {
         ? name.trim()
         : "Bạn ẩn danh";
     const safeMessage = message.trim();
+    const safeAttend = normalizeStringList(attend);
+    const safeGuests = normalizeStringList(guests);
+    const timestamp = new Date().toISOString();
 
     if (SHEET_ID && isGoogleSheetsConfigured()) {
       await appendSheetRow(SHEET_ID, SHEET_RANGE, [
         safeName,
         safeMessage,
-        new Date().toISOString(),
+        safeAttend,
+        safeGuests,
+        timestamp,
       ]);
     } else {
       console.warn("Google Sheets is not configured. Message not persisted.");
@@ -164,8 +183,9 @@ export async function POST(request: Request) {
             {
               Name: safeName,
               Message: safeMessage,
-              Attend: "",
-              Date: new Date().toISOString(),
+              Attend: safeAttend,
+              Guests: safeGuests,
+              Date: timestamp,
             },
           ],
         }),

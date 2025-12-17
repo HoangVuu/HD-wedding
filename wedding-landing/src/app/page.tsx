@@ -1,6 +1,13 @@
 "use client";
 
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
@@ -21,10 +28,10 @@ const navItems = [
 ];
 
 const featuredImages = [
-  { src: "/media/DAG_3775.jpg", label: "Khoảnh khắc ngọt ngào Red Velvet" },
-  { src: "/media/DAG_3724.jpg", label: "Sưởi ấm nhau dưới bình minh Tuy Hòa" },
-  { src: "/media/DAG_3941.jpg", label: "Sưởi ấm nhau dưới bình minh Tuy Hòa" },
-  { src: "/media/DAG_3794.jpg", label: "Sưởi ấm nhau dưới bình minh Tuy Hòa" },
+  { src: "/media/f1.jpg", label: "Khoảnh khắc ngọt ngào Red Velvet" },
+  { src: "/media/f2.jpg", label: "Sưởi ấm nhau dưới bình minh Tuy Hòa" },
+  { src: "/media/f3.jpg", label: "Sưởi ấm nhau dưới bình minh Tuy Hòa" },
+  { src: "/media/f4.jpg", label: "Sưởi ấm nhau dưới bình minh Tuy Hòa" },
 ];
 
 const heroSlides = featuredImages.map(({ src, label }) => ({
@@ -35,112 +42,112 @@ const heroSlides = featuredImages.map(({ src, label }) => ({
 
 const storySnapshots = [
   {
-    src: "/media/DAG_3844.jpg",
+    src: "/media/s1.jpg",
     label: "Bước chân đầu tiên trên cát trắng kể từ ngày gặp nhau.",
   },
   {
-    src: "/media/DAG_3818.jpg",
+    src: "/media/s2.jpg",
     label: "Hòa mình trong mùi hoa giấy ngọt ngào của Phú Yên.",
   },
   {
-    src: "/media/DAG_3858.jpg",
+    src: "/media/s3.jpg",
     label: "Một cái nhìn thật lâu khiến tim đập rộn ràng.",
   },
   {
-    src: "/media/DAG_3870.jpg",
+    src: "/media/s4.jpg",
     label: "Khi sân khấu ngoài trời chỉ còn lại chúng mình.",
   },
 
   {
-    src: "/media/DAG_3915.jpg",
+    src: "/media/s5.jpg",
     label: "Bước chân đầu tiên trên cát trắng kể từ ngày gặp nhau.",
   },
   {
-    src: "/media/DAG_3919.jpg",
+    src: "/media/s6.jpg",
     label: "Hòa mình trong mùi hoa giấy ngọt ngào của Phú Yên.",
   },
   {
-    src: "/media/DAG_3941.jpg",
-    label: "Một cái nhìn thật lâu khiến tim đập rộn ràng.",
-  },
-  {
-    src: "/media/DAG_4007.jpg",
+    src: "/media/s7.jpg",
     label: "Khi sân khấu ngoài trời chỉ còn lại chúng mình.",
   },
 
   {
-    src: "/media/DAG_4215.jpg",
+    src: "/media/s8.jpg",
     label: "Bước chân đầu tiên trên cát trắng kể từ ngày gặp nhau.",
   },
   {
-    src: "/media/DAG_4063.jpg",
+    src: "/media/s9.jpg",
     label: "Hòa mình trong mùi hoa giấy ngọt ngào của Phú Yên.",
   },
   {
-    src: "/media/DAG_4111.jpg",
+    src: "/media/s10.jpg",
     label: "Một cái nhìn thật lâu khiến tim đập rộn ràng.",
   },
   {
-    src: "/media/DAG_4135.jpg",
+    src: "/media/s11.jpg",
+    label: "Khi sân khấu ngoài trời chỉ còn lại chúng mình.",
+  },
+  {
+    src: "/media/s6.jpg",
     label: "Khi sân khấu ngoài trời chỉ còn lại chúng mình.",
   },
 ];
 
 const marqueeImages = [{
-  src: "/media/DAG_4765.jpg",
+  src: "/media/t1-min.jpg",
   label: "Bình minh Tuy Hòa",
 }, {
-  src: "/media/DAG_4761.jpg",
+  src: "/media/t2-min.jpg",
   label: "Cát trắng kể chuyện",
 }, {
-  src: "/media/DAG_4757.jpg",
+  src: "/media/t3-min.jpg",
   label: "Hương hoa giấy",
 }, {
-  src: "/media/DAG_4740.jpg",
+  src: "/media/t4-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4713.jpg",
+src: "/media/t5-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4705.jpg",
+  src: "/media/t6-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4643.jpg",
+  src: "/media/t7-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4492.jpg",
+  src: "/media/t8-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4464.jpg",
+  src: "/media/t9-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4355.jpg",
+  src: "/media/t10-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4352.jpg",
+  src: "/media/t11-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4337.jpg",
+  src: "/media/t12-min.jpg",
   label: "Bình minh Tuy Hòa",
 },
 {
-  src: "/media/DAG_4308.jpg",
+  src: "/media/t13-min.jpg",
   label: "Bình minh Tuy Hòa",
 },  
   {
-    src: "/media/DAG_4232.jpg",
+    src: "/media/t14-min.jpg",
     label: "Bình minh Tuy Hòa",
   },
   {
-    src: "/media/DAG_4260.jpg",
+    src: "/media/t15-min.jpg",
     label: "Bình minh Tuy Hòa",
   },
 ];
@@ -148,34 +155,25 @@ const marqueeImages = [{
 
 
 const collageImages = [
-  "/media/DAG_3724.jpg", 
-  "/media/DAG_4308.jpg",
-  "/media/DAG_4260.jpg",
-  
-  "/media/DAG_4135.jpg", // do
-  "/media/DAG_4224.jpg",
-  "/media/DAG_4713.jpg",
-  "/media/DAG_4761.jpg",
-  
-  "/media/DAG_4740.jpg",
-  "/media/DAG_3794.jpg", // do
-  
-  "/media/DAG_4765.jpg",
-"/media/DAG_3941.jpg", // do
-"/media/DAG_3775.jpg",
-"/media/DAG_4757.jpg",
-
-
-"/media/DAG_4705.jpg",
-"/media/DAG_4492.jpg",
-"/media/DAG_4464.jpg",
-"/media/DAG_4337.jpg",
-"/media/DAG_4232.jpg",
-
-
-"/media/DAG_3870.jpg",
-"/media/DAG_3919.jpg",
-
+ "/media/doi/1-min.jpg",
+ "/media/doi/2-min.jpg",
+ "/media/doi/3-min.jpg",
+ "/media/doi/4-min.jpg",
+ "/media/doi/5-min.jpg",
+ "/media/doi/6-min.jpg",
+ "/media/doi/7-min.jpg",
+ "/media/doi/8-min.jpg",
+ "/media/doi/9-min.jpg",
+ "/media/doi/10-min.jpg",
+ "/media/doi/11-min.jpg",
+ "/media/doi/12-min.jpg",
+ "/media/doi/13-min.jpg",
+ "/media/doi/14-min.jpg",
+ "/media/doi/15-min.jpg",
+ "/media/doi/16-min.jpg",
+ "/media/doi/17-min.jpg",
+ "/media/journey/donghanh-1.jpg",
+ "/media/journey/donghanh-5.jpg",
 ];
 
 const journeyAlbumSlides = [
@@ -228,36 +226,37 @@ const journeyAlbumSlides = [
 const partyEvents = [
   {
     title: "Tiệc Nhà Gái · Phú Yên",
-    date: "24 Tháng 01 2026",
+    date: "24 · Tháng 01 ·2026",
     time: "18:00",
-    venue: "Sảnh A - Nhà hàng Công Đoàn, 278 Đường Nguyễn Huệ, Tuy Hòa, Phú Yên",
-    map: "google.com/maps/dir//278+Nguyễn+Huệ,+Phường7,+Tuy+Hòa,+Phú+Yên/@10.791811,106.6261761,15z/data=!4m9!4m8!1m1!4e2!1m5!1m1!1s0x316fec48bf7c254d:0x43974ccddc063b94!2m2!1d109.3206338!2d13.0969768?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+    venue: "Khách sạn Công Đoàn, 53 Độc Lập, Phường 7, Tuy Hòa, Phú Yên",
+    map: "google.com/maps/dir/10.7917662,106.6261589/53+Độc+Lập,+Phường+7,+Tuy+Hòa,+Phú+Yên/@11.4701967,107.0504982,9.73z/data=!4m9!4m8!1m1!4e1!1m5!1m1!1s0x316fec48c474edf5:0xf9da6578cc01dcd9!2m2!1d109.3208897!2d13.0966895?hl=vi&entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
   },
   {
     title: "Tiệc Nhà Trai · Ninh Thuận",
-    date: "29 Tháng 01 2026",
+    date: "29 · Tháng 01 · 2026",
     time: "18:00",
-    venue: "Ballroom - Khu nghỉ dưỡng biển Long Thuận, Phan Rang – Tháp Chàm",
-    map: "https://maps.app.goo.gl/tBiA1Pum1x6mJYGMA",
+    venue: "Khách sạn Sài Gòn Ninh Chữ, 19 An Dương Vương, TT. Khánh Hải, Ninh Hải, Ninh Thuận",
+    map: "https://www.google.com/maps/dir/10.7917662,106.6261589/H2QQ%2BH7J,+19+An+D%C6%B0%C6%A1ng+V%C6%B0%C6%A1ng,+TT.+Kh%C3%A1nh+H%E1%BA%A3i,+Ninh+H%E1%BA%A3i,+Ninh+Thu%E1%BA%ADn+660000/@10.9821709,106.8821193,10.07z/data=!4m9!4m8!1m1!4e1!1m5!1m1!1s0x3170d02225624ecf:0x6d94dde8d58a78b9!2m2!1d109.0368385!2d11.5893612?hl=vi&entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
   },
 ];
 
-const blessingPlaceholders: Message[] = [
-  {
-    name: "Team NYC",
-    message: "Chúc hai bạn mãi nắm tay nhau đi qua mọi mùa thương nhớ!",
-  },
-  {
-    name: "Henry",
-    message: "Ngày chung đôi chính thức đếm ngược, tụi mình luôn bên cạnh.",
-  },
-];
+const ensureExternalUrl = (url: string): string => {
+  if (!url) return "#";
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith("//")) return `https:${url}`;
+  return `https://${url.replace(/^\/+/, "")}`;
+};
+
+const getTimestampValue = (timestamp?: string) => {
+  if (!timestamp) return 0;
+  const parsed = Date.parse(timestamp);
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+const sortBlessingsByLatest = (entries: Message[]) =>
+  [...entries].sort((a, b) => getTimestampValue(b.timestamp) - getTimestampValue(a.timestamp));
 
 const musicUrl = "/media/audio/wedding.webm";
-const sheetDbWebhookUrl =
-  process.env.NEXT_PUBLIC_SHEETDB_URL ??
-  "https://sheetdb.io/api/v1/c6eefggtbyk8s";
-
 const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
@@ -281,7 +280,7 @@ function ParallaxSection({
   priority = false,
   className = "",
   contentClassName = "",
-  overlayClassName = "bg-linear-to-br from-white/95 via-white/85 to-white/90",
+  overlayClassName = "bg-linear-to-br from-white/25 via-white/30 to-white/40",
   children,
 }: ParallaxSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -294,7 +293,7 @@ function ParallaxSection({
     <section
       id={id}
       ref={sectionRef}
-      className={`relative isolate overflow-hidden rounded-[40px] border border-blush-100 shadow-glow-soft ${className}`}
+      className={`relative isolate overflow-hidden rounded-[40px] shadow-glow-soft ${className}`}
     >
       <motion.div
         aria-hidden
@@ -329,7 +328,7 @@ function ParallaxSection({
 }
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>(blessingPlaceholders);
+  const [messages, setMessages] = useState<Message[]>(sortBlessingsByLatest([]));
   const [loadingMessages, setLoadingMessages] = useState<boolean>(true);
   const [attendanceForm, setAttendanceForm] = useState({
     name: "",
@@ -375,6 +374,12 @@ export default function Home() {
       transition: { duration: 0.8, ease: "easeInOut" as const },
     },
   };
+  const textReveal = (delay = 0) => ({
+    initial: { opacity: 0, y: 26 },
+    whileInView: { opacity: 1, y: 0 },
+    transition: { duration: 0.85, ease: "easeInOut" as const, delay },
+    viewport: { once: true, amount: 0.5 },
+  });
 
   const buttonHover = {
     whileHover: { scale: 1.05, y: -2 },
@@ -383,15 +388,16 @@ export default function Home() {
 
   const joinOptions = useMemo(
     () => [
-      {
-        value: "Nhà Trai (Ninh Thuận)",
-        label: "Nhà trai · Ninh Thuận",
-                      date: "29 · 01 · 2026 · 18:00",
-      },
+    
       {
         value: "Nhà Gái (Phú Yên)",
         label: "Nhà gái · Phú Yên",
         date: "24 · 01 · 2026 · 18:00",
+      },
+      {
+        value: "Nhà Trai (Ninh Thuận)",
+        label: "Nhà trai · Ninh Thuận",
+                      date: "29 · 01 · 2026 · 18:00",
       },
     ],
     []
@@ -437,24 +443,39 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
+  const fetchLatestMessages = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/messages?ts=${Date.now()}`, {
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Unable to load blessings");
+      const data = await response.json();
+      if (Array.isArray(data.messages) && data.messages.length) {
+        return sortBlessingsByLatest(data.messages);
+      }
+    } catch (error) {
+      console.warn("Failed to refresh blessings", error);
+    }
+    return null;
+  }, []);
+
   // Fetch blessings from API
   useEffect(() => {
+    let isMounted = true;
     const fetchMessages = async () => {
-      try {
-        const res = await fetch("/api/messages");
-        if (!res.ok) throw new Error("Unable to load blessings");
-        const data = await res.json();
-        if (Array.isArray(data.messages) && data.messages.length) {
-          setMessages(data.messages);
-        }
-      } catch (error) {
-        console.warn(error);
-      } finally {
+      const latest = await fetchLatestMessages();
+      if (latest && isMounted) {
+        setMessages(latest);
+      }
+      if (isMounted) {
         setLoadingMessages(false);
       }
     };
     fetchMessages();
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchLatestMessages]);
 
   // Countdown helper
   useEffect(() => {
@@ -604,6 +625,12 @@ export default function Home() {
     if (!trimmedName || !trimmedMessage) return;
     const selectedAttend = attendanceForm.joinAt.join(", ") || "Chưa chọn";
     const guestCount = attendanceForm.guests;
+    const normalizedName = trimmedName || "Bạn ẩn danh";
+    const optimisticEntry: Message = {
+      name: normalizedName,
+      message: trimmedMessage,
+      timestamp: new Date().toISOString(),
+    };
     setFormStatus("loading");
     try {
       const messageResponse = await fetch("/api/messages", {
@@ -612,39 +639,37 @@ export default function Home() {
         body: JSON.stringify({
           name: trimmedName,
           message: trimmedMessage,
+          attend: selectedAttend,
+          guests: guestCount,
         }),
+        cache: "no-store",
       });
 
       if (!messageResponse.ok) {
         throw new Error("Failed to save blessing");
       }
 
-      if (sheetDbWebhookUrl) {
-        fetch(sheetDbWebhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            data: [
-              {
-                Name: trimmedName,
-                Attend: selectedAttend,
-                Message: trimmedMessage,
-                Guests: guestCount,
-                Date: new Date().toISOString(),
-              },
-            ],
-          }),
-        }).catch((error) => {
-          console.warn("SheetDB sync failed:", error);
-        });
+      const messageData = await messageResponse.json();
+      let updatedMessages: Message[] | null = null;
+
+      if (Array.isArray(messageData.messages) && messageData.messages.length) {
+        updatedMessages = messageData.messages;
+      } else {
+        updatedMessages = await fetchLatestMessages();
       }
 
-      const messageData = await messageResponse.json();
-      if (Array.isArray(messageData.messages) && messageData.messages.length) {
-        setMessages(messageData.messages);
+      if (updatedMessages && updatedMessages.length) {
+        const alreadyIncluded = updatedMessages.some(
+          (entry) =>
+            entry.message.trim() === trimmedMessage &&
+            (entry.name || "Bạn ẩn danh").trim() === normalizedName.trim()
+        );
+        const nextList = alreadyIncluded
+          ? updatedMessages
+          : [optimisticEntry, ...updatedMessages];
+        setMessages(sortBlessingsByLatest(nextList));
       } else {
-        const refreshed = await fetch("/api/messages").then((res) => res.json());
-        setMessages(refreshed.messages ?? blessingPlaceholders);
+        setMessages((prev) => sortBlessingsByLatest([optimisticEntry, ...prev]));
       }
 
       setAttendanceForm({
@@ -687,16 +712,26 @@ export default function Home() {
       setTimeout(() => heart.remove(), 5000);
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLetterOpened(true);
+    }, 4000);
+   })
   return (
 
     <>
     {!letterOpened && (
-<div className="animation-love anibg-sm sm:anibg flex flex-col items-center justify-center h-[30vh]">
+<div className="animation-love animation-love1 anibg-sm sm:anibg flex flex-col h-[30vh]">
+
+
+<div className="flex flex-col items-center justify-center bg-over">
+<div className="font size-big">Quốc Hoàng & Ngọc Đăng</div>
+<hr style={{ height: "2px", backgroundColor: "black", border: "none", margin: "1rem 0", fontFamily: "'UTM-Azkia.ttf', sans-serif" }} />
+     <div className="intro-title">Thư mời thiệp cưới</div>
       <div className="mail-wrapper top30 flex flex-col items-center justify-center pt-10" id="mailWrapper" onClick={openLetter}>
         <div className="heart">💌</div>
-        <div className="font-be">Thiệp cưới</div>
-        <div className="font">Quốc Hoàng & Ngọc Đăng</div>
     </div>
+</div>
 
     <div className="letter" id="letter">
         <p>You&apos;re the reason hearts keep falling all around! 💕</p>
@@ -716,7 +751,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 py-4">
           <nav className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="rounded-full border border-blush-200 bg-blush-50 px-3 py-1 text-xs uppercase tracking-[0.3em] text-blush-500">
+              <span className=" px-3 py-1 text-2xl uppercase tracking-[0.3em] font-bold text-blush-500 text-cyan-950">
                 QH & ND
               </span>
 
@@ -733,12 +768,6 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
-            <Link
-              href="#rsvp"
-              className="rounded-full bg-blush-500 px-4 py-2 text-sm font-semibold text-white shadow-glow-soft transition hover:bg-blush-400"
-            >
-              RSVP
-            </Link>
           </nav>
           <div className="mt-4 flex gap-3 overflow-x-auto pb-2 text-sm md:hidden">
             {navItems.map((item) => (
@@ -763,7 +792,7 @@ export default function Home() {
           {heroSlides.map((slide, index) => (
             <motion.div
               key={slide.src}
-              className="absolute inset-0 w-full md:w-[60%] py-10"
+              className="absolute inset-0 w-full md:w-[58%] sm:aspect-3/4 py-10"
               initial={{ opacity: 0, scale: 1.08 }}
               animate={
                 activeHeroSlide === index
@@ -778,13 +807,13 @@ export default function Home() {
                 fill
                 priority={index === 0}
                 sizes="100vw"
-                className="object-contain md:object-contain img-hero-slide"
+                className="object-contain md:object-cover img-hero-slide pt-20"
               />
-          <div className="absolute inset-0 sm:bg-linear-to-r sm:from-rose-900/60 sm:via-rose-700/50 sm:to-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-rose-900/60 via-rose-700/50 to-transparent to-transparent" />
             </motion.div>
           ))}
         </div>
-        <div className="relative mx-auto pt-[650px] sm:pt-24  flex max-w-7xl flex-col gap-10 py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
+        <div className="relative mx-auto sm:pt-24 flex max-w-7xl flex-col gap-10 py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
           <motion.div
             className="flex-1 space-y-6 px-4 md:px-0"
             initial={{ opacity: 0, y: 40 }}
@@ -792,40 +821,26 @@ export default function Home() {
             transition={{ duration: 1 }}
           >
             {/* <div className="h-[400px] md:hidden" /> */}
-            <p className="text-md hidden md:block uppercase font-semibold tracking-[0.5em] text-white/80">
+            <p className="text-md  md:block uppercase font-semibold tracking-[0.5em] text-white/80">
               Save the Date
             </p>
-            <h1 className="font-script hidden md:block text-5xl leading-tight sm:text-6xl w-fit ml-30">
+            <h1 className="font-script  md:block text-5xl leading-tight sm:text-6xl w-full text-center sm:w-fit sm:text-left">
               <span className="text-6xl sm:text-7xl font-wedding">Quốc&nbsp;Hoàng</span>
               <div className="text-blush-200 text-5xl sm:text-6xl text-center">&hearts;</div>
               <span className="text-6xl sm:text-7xl font-wedding">Ngọc&nbsp;Đăng</span>
             </h1>
-            <p className="max-w-xl hidden md:block  text-md md:text-lg text-white italic">
-              Hành trình yêu thương của chúng mình tròn đầy hơn khi có sự hiện
-              diện của bạn. Cảm ơn vì sẽ đến và gửi lời chúc cho ngày vui này.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <motion.div {...buttonHover}>
-                <Link
-                  href="#our-stories"
-                  ref={(el) => {
-                    if (el) heroCtaRefs.current[0] = el;
-                  }}
-                  className="group inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-4 md:px-7 py-3 text-sm md:text-base font-semibold text-white shadow-[0_15px_35px_rgba(0,0,0,0.35)] transition hover:-translate-y-1 hover:bg-white/15"
-               
-               >
-                  <span>Chuyện chúng mình</span>
-                </Link>
-              </motion.div>
+           
+            <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
+             
               <motion.div {...buttonHover}>
                 <Link
                   href="#rsvp"
                   ref={(el) => {
                     if (el) heroCtaRefs.current[1] = el;
                   }}
-                  className="group inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-4 md:px-7 py-3 text-sm md:text-base font-semibold text-white shadow-[0_15px_35px_rgba(0,0,0,0.35)] transition hover:-translate-y-1 hover:bg-white/15"
+                  className="hero-cta-highlight relative mt-20 sm:mt-4 animated-border-btn group inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-4 md:px-7 py-3 text-sm md:text-base font-semibold  shadow-[0_15px_35px_rgba(0,0,0,0.35)] transition hover:-translate-y-1 hover:bg-white/15"
                 >
-                  <span>Xác nhận tham dự</span>
+                  <span className="">Xác nhận tham dự</span>
                 </Link>
               </motion.div>
             </div>
@@ -836,13 +851,13 @@ export default function Home() {
               </p>
               <div className="mt-3 flex flex-wrap items-end gap-6">
                 <div>
-                  <p className="text-3xl font-semibold">24 · 01 · 2026</p>
+                  <p className="text-2xl sm:text-3xl font-semibold">24 · 01 · 2026</p>
                   <p className="text-sm text-white/75">
                     Tuy Hòa, Phú Yên · 18:00
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-semibold">29 · 01 · 2026</p>
+                  <p className="text-2xl sm:text-3xl font-semibold">29 · 01 · 2026</p>
                   <p className="text-sm text-white/75">
                     Phan Rang, Ninh Thuận · 18:00
                   </p>
@@ -880,7 +895,7 @@ export default function Home() {
           >
             <div className="gradient-border rounded-[32px] bg-white/95 p-2">
         <Image
-                src="/media/DAG_4355.JPG"
+                src="/media/ban.JPG"
                 alt="Quốc Hoàng & Ngọc Đăng"
                 width={860}
                 height={1060}
@@ -923,33 +938,127 @@ export default function Home() {
       )}
 
       <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-0 sm:pt-6 text-midnight-900 sm:px-4">
-        <ParallaxSection
-          id="our-stories"
-          backgroundSrc="/media/DAG_3724.jpg"
-          priority
-          className="mt-24"
-          contentClassName="grid gap-10 px-5 py-8 sm:p-10 lg:grid-cols-2 bg-white/70"
-          overlayClassName="from-white/95 via-rose-50/70 to-white/95"
+        <section
+          id="groom-bride"
+          className="mt-16 rounded-[36px] border border-emerald-50 bg-white/85 p-6 shadow-glow-soft"
         >
+          <motion.div className="text-center space-y-3" {...textReveal()}>
+            <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+              Groom & Bride Info
+            </p>
+            <h2 className="font-display text-3xl text-rose-900 sm:text-4xl">
+              Chú rể &amp; Cô dâu
+            </h2>
+            <div className="line-glow mx-auto h-[4px] w-[70%] bg-transparent  mt-8" />
+          </motion.div>
+          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+            <motion.div
+              className="glass-panel flex flex-col items-center rounded-[28px] border border-emerald-100 bg-emerald-50/40 p-6 text-center shadow-glow-soft"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              viewport={{ once: true, amount: 0.4 }}
+            >
+              <p className="text-sm uppercase tracking-[0.4em] text-emerald-600">
+                Chú rể
+              </p>
+              <h3 className="mt-1 font-script text-5xl text-emerald-900 font-wed">
+                Quốc Hoàng
+              </h3>
+              <div className="mt-4 w-full overflow-hidden rounded-[22px] border border-emerald-100 bg-white/80">
+                <div className="groom-bride-photo relative aspect-[2/3] w-full">
+                  <Image
+                    src="/media/groom.jpg"
+                    alt="Chú rể Quốc Hoàng"
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 24vw, 70vw"
+                    quality={95}
+                    priority
+                  />
+                </div>
+              </div>
+              <p className="mt-4 text-base text-emerald-900/80">
+                Chàng trai tràn đầy năng lượng tích cực, luôn
+                mang theo nụ cười khi đồng hành cùng người thương.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="hidden h-full flex-col items-center justify-center lg:flex"
+              initial={{ scale: 0.85, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.9, ease: "easeInOut" }}
+              viewport={{ once: true, amount: 0.5 }}
+            >
+              <span className="block">
+                <Image
+                  src="/media/heart.gif"
+                  width={80}
+                  height={80}
+                  alt="Heart"
+                  className="h-20 w-20 object-contain"
+                  style={{ display: "inline-block" }}
+                  unoptimized
+                  priority
+                />
+              </span>
+            </motion.div>
+
+            <motion.div
+              className="glass-panel flex flex-col items-center rounded-[28px] border border-emerald-100 bg-emerald-50/40 p-6 text-center shadow-glow-soft"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              viewport={{ once: true, amount: 0.4 }}
+            >
+              <p className="text-sm uppercase tracking-[0.4em] text-emerald-600">
+                Cô dâu
+              </p>
+              <h3 className="mt-1 font-script text-5xl text-emerald-900 font-wed">
+                Ngọc Đăng
+              </h3>
+              <div className="mt-4 w-full overflow-hidden rounded-[22px] border border-emerald-100 bg-white/80">
+                <div className="groom-bride-photo relative aspect-[2/3] w-full">
+                  <Image
+                    src="/media/bride.jpg"
+                    alt="Cô dâu Ngọc Đăng"
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 24vw, 70vw"
+                    quality={95}
+                    priority
+                  />
+                </div>
+              </div>
+              <p className="mt-4 text-base text-emerald-900/80">
+                Nàng thơ dịu dàng với trái tim giàu cảm xúc, luôn nâng niu từng
+                khoảnh khắc bình yên của hành trình yêu.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+      <div className="relative mt-24 grid gap-10 py-8 lg:grid-cols-2 ">
           <div className="heart-rain" id="heartRain"></div>
           <motion.div className="space-y-6" {...fadeIn()}>
-            <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+            <p className="text-sm uppercase tracking-[0.5em] text-rose-400 font-arial">
               Our Stories
             </p>
-            <h2 className="font-display text-3xl font-semibold text-rose-900 sm:text-4xl">
+            <h2 className="font-display font-arial text-3xl font-semibold text-rose-900 sm:text-4xl text-animate-title">
               Chuyện chúng mình
             </h2>
-            <p className="text-slate-600">
+            <p className="font-arial text-slate-600">
             Quốc Hoàng – chàng trai đầy lý trí nhưng ấm áp, và Ngọc Đăng – nàng dịu dàng mang trái tim nhiều yêu thương.
             Hai hành tinh tưởng chừng khác biệt, mỗi người mang một nhịp sống riêng, lại bất ngờ tìm thấy quỹ đạo chung bằng sự chân thành. Giữa những bộn bề công việc và nhịp sống vội vã, chúng mình vẫn chọn dành thời gian cho nhau — để lắng nghe, để thấu hiểu và để sẻ chia những điều nhỏ bé nhất trong cuộc sống.
             </p>
-            <p className="text-slate-600">
+            <p className="font-arial text-slate-600">
             Tình yêu của chúng mình không bắt đầu từ những điều quá lớn lao, mà lớn dần lên từ những khoảnh khắc rất đỗi bình thường. Là những lần cùng nhau dạo bước trên bãi cát lúc chiều muộn, nghe sóng biển thì thầm; là những bữa ăn giản dị tự tay nấu, đôi khi vụng về nhưng luôn đầy ắp tiếng cười; là những buổi tối chậm rãi kể cho nhau nghe về một ngày đã qua.
             </p>
-            <p className="text-slate-600">
+            <p className="font-arial text-slate-600">
             Chúng mình tin rằng hạnh phúc không cần phải rực rỡ, chỉ cần đủ ấm. Là khi có một người để trở về, một người sẵn sàng ở bên dù vui hay buồn, thành công hay chông chênh. Từ hai con người độc lập, chúng mình học cách đồng hành — tôn trọng sự khác biệt, trân trọng điểm chung và kiên nhẫn cùng nhau trưởng thành.
             </p>
-            <p className="text-slate-600">
+            <p className="font-arial text-slate-600">
             Hành trình yêu thương ấy đã đưa chúng mình đến quyết định quan trọng nhất: cùng nắm tay bước sang một chương mới của cuộc đời. Từ hôm nay, không chỉ là “anh” và “em”, mà là chúng mình — cùng viết tiếp câu chuyện đời bằng những khung hình thật dịu dàng, bằng yêu thương bền bỉ và niềm tin vào một tương lai chung.
             </p>
           </motion.div>
@@ -999,7 +1108,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </ParallaxSection>
+          </div>
 
         <section className="mt-16">
           <motion.div
@@ -1072,18 +1181,18 @@ export default function Home() {
           ref={journeyAlbumRef}
           className="mt-24 space-y-10 px-4 py-6 transition duration-500 sm:px-8"
         >
-          <div className="text-center">
+          <motion.div className="text-center font-arial" {...textReveal()}>
             <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
             The Journey of falling in love
             </p>
-            <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
-              Từng cột mốc đáng nhớ
+            <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl text-animate-title font-arial">
+            Dấu ấn tình yêu 
             </h2>
-            <p className="mt-2 text-slate-600">
+            <p className="mt-2 text-slate-600 font-arial">
               Cuộn xuống thật chậm, từng khung hình sẽ tự động hiện ra để bạn hòa mình
               vào hành trình yêu thương cùng tụi mình.
             </p>
-          </div>
+          </motion.div>
           <div className="relative hidden h-[75vh] overflow-hidden rounded-[40px] border border-white/40 bg-white/70 p-6 shadow-glow-soft md:block">
             {journeyAlbumSlides.map((slide, index) => (
               <div
@@ -1091,7 +1200,7 @@ export default function Home() {
                 ref={(el) => {
                   if (el) journeySlidesRefs.current[index] = el;
                 }}
-                className="journey-fade-slide absolute inset-0 flex h-full flex-col justify-between rounded-[32px] p-6"
+                className="journey-fade-slide absolute inset-0 flex h-full flex-col justify-between rounded-[32px]"
               >
                 <div className="relative h-[85%] w-full overflow-hidden rounded-[28px]">
                   <Image
@@ -1104,15 +1213,15 @@ export default function Home() {
                     sizes="(min-width: 1280px) 60vw, (min-width: 768px) 80vw, 100vw"
                   />
                 </div>
-                <div className="mt-6 space-y-2">
+                <div className="mt-6 space-y-2 p-6">
                 
-                  <h3 className="font-display text-2xl text-rose-900">
+                  <h3 className="font-display text-2xl text-rose-900 font-arial">
                     {slide.title}
                   </h3>
-                  <p className="text-sm uppercase tracking-[0.4em] text-rose-300">
+                  <p className="text-sm uppercase tracking-[0.4em] text-rose-300 font-arial">
                     {slide?.date}
                   </p>
-                  <p className="text-sm text-slate-600">{slide.caption}</p>
+                  <p className="text-base text-slate-600">{slide.caption}</p>
                 </div>
               </div>
             ))}
@@ -1159,14 +1268,14 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             variants={galleryTextAnimation}
           >
-            <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+            <p className="text-sm uppercase tracking-[0.5em] text-rose-400 ">
               Gallery
             </p>
-            <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
-              Những mảnh ghép mới
+            <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl text-animate-title">
+            Nhật ký đời thường
             </h2>
             <p className="mt-2 text-slate-600">
-              Tụi mình gom thêm những khung hình hậu trường để bạn cảm nhận rõ hơn
+              Tụi mình gom thêm những khoảnh khắc thường ngày để bạn cảm nhận rõ hơn
               nhịp thở của hành trình yêu.
             </p>
           </motion.div>
@@ -1204,68 +1313,81 @@ export default function Home() {
           </div>
         </section>
 
-        <ParallaxSection
-          id="party"
-          backgroundSrc="/media/DAG_4757.JPG"
-          className="mt-24"
-          contentClassName="space-y-10 px-5 py-16 sm:p-16"
-        >
-          <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
-              Party
-            </p>
-            <h2 className="mt-2 font-display text-shadow-lg text-3xl  from-rose-500 to-rose-300 sm:text-4xl">
-              <span className="bg-linear-to-r text-shadow-lg text-[#f1449b] bg-clip-text uppercase font-bold">
-              Hẹn gặp bạn tại{" "} hai miền yêu thương
-              </span>
-            </h2>
+        <section id="party" className="full-bleed relative">
+          <div className="absolute inset-0">
+            <Image
+              src="/media/bg-thiep.png"
+              alt=""
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={false}
+            />
+            <div className="absolute inset-0 bg-white/65 backdrop-blur-[1px]" />
           </div>
-          <div className="grid gap-8 lg:grid-cols-2">
-            {partyEvents.map((event) => (
-              <motion.div
-                key={event.title}
-                className="glass-panel flex flex-col rounded-3xl p-6 sm:p-8"
-                {...fadeIn(0.1)}
-                whileHover={{ y: -10, scale: 1.01 }}
-              >
-                <p className="text-sm uppercase tracking-[0.4em] text-blush-500">
-                  {event.date}
+          <div className="relative flex item-center justify-center mx-auto max-w-6xl px-4 py-16 sm:px-6 h-[1000px] d-flex ">
+            <div className="rounded-[40px]  p-6 shadow-glow-soft h-fit sm:mt-50">
+              <motion.div className="text-center" {...textReveal()}>
+                <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+                  Party
                 </p>
-                <h3 className="mt-2 font-display text-2xl text-rose-900">
-                  {event.title}
-                </h3>
-                <p className="mt-3 text-3xl font-semibold text-rose-900 sm:text-4xl">
-                  {event.time}
-                </p>
-                <p className="mt-1 flex-1 text-slate-600">{event.venue}</p>
-                <Link
-                replace
-                  href={event.map}
-                  target="_blank"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blush-500 underline decoration-dotted"
-                >
-                  Xem bản đồ
-                </Link>
+                <h2 className="mt-2 font-display text-shadow-lg text-3xl from-rose-500 to-rose-300 sm:text-4xl">
+                  <span className="bg-linear-to-r text-shadow-lg text-[#f1449b] bg-clip-text uppercase font-bold">
+                    Hẹn gặp bạn tại hai miền yêu thương
+                  </span>
+                </h2>
               </motion.div>
-            ))}
+              <div className="mt-10 grid gap-8 lg:grid-cols-2">
+                {partyEvents.map((event) => (
+                  <motion.div
+                    key={event.title}
+                    className="glass-panel flex flex-col rounded-3xl border border-rose-50/60 p-6 sm:p-8"
+                    {...fadeIn(0.1)}
+                    whileHover={{ y: -10, scale: 1.01 }}
+                  >
+                    <p className="text-sm uppercase tracking-[0.4em] text-blush-500">
+                      {event.date}
+                    </p>
+                    <h3 className="mt-2 font-display text-2xl text-rose-900">
+                      {event.title}
+                    </h3>
+                    <p className="mt-3 text-3xl font-semibold text-rose-900 sm:text-4xl">
+                      {event.time}
+                    </p>
+                    <p className="mt-1 flex-1 text-slate-600">{event.venue}</p>
+                    <Link
+                      replace
+                      href={ensureExternalUrl(event.map)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r  px-5 py-2.5 text-sm font-semibold text-black shadow-[0_12px_30px_rgba(248,63,10,0.2)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(244,63,94,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400"
+                    >
+                      <span className="tracking-wide">Xem bản đồ</span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
-        </ParallaxSection>
+        </section>
 
-        <section className="mt-24 flex flex-col gap-8 lg:flex-row" id="rsvp">
+        <p className="text-sm uppercase tracking-[0.5em] text-rose-400 mt-24">
+                  Confirm Attendance
+                </p>
+                <h2 className="mt-3 font-display text-3xl sm:text-4xl font-bold text-[#9e751c]">
+                  Bạn có thể tham dự chứ?
+                </h2>
+        <section className="mt-12 flex flex-col gap-8 lg:flex-row" id="rsvp">
+          
           <div className="lg:w-1/2">
             <ParallaxSection
               backgroundSrc="/media/DAG_4224.jpg"
               className="rounded-[32px]"
               contentClassName="px-5 py-8 sm:p-10"
             >
-              <div className="text-center">
-                <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
-                  Confirm Attendance
-                </p>
-                <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
-                  Bạn có thể tham dự chứ?
-                </h2>
-              </div>
+              <motion.div className="text-center" {...textReveal()}>
+          
+              </motion.div>
               <form className="mt-10 space-y-8" onSubmit={handleRsvpSubmit}>
                 <div>
                   <label className="text-sm sm:text-base ">Họ và tên</label>
@@ -1302,10 +1424,10 @@ export default function Home() {
                           whileTap={{ scale: 0.98 }}
                         >
                           <p className="font-semibold">{option.label}</p>
-                          <p className="text-xs uppercase tracking-[0.4em] text-rose-300">
+                          <p className="text-xs uppercase tracking-[0.4em] text-black-300">
                             {option.date}
                           </p>
-                          <p className="mt-1 text-xs uppercase tracking-[0.4em] text-rose-400">
+                          <p className="mt-1 text-xs uppercase tracking-[0.4em] text-black-400">
                             {selected ? "ĐÃ CHỌN" : "CHỌN"}
                           </p>
                         </motion.button>
@@ -1357,9 +1479,6 @@ export default function Home() {
                 >
                   <span className="inline-flex items-center justify-center gap-2">
                     {formStatus === "loading" ? "Đang xác nhận..." : "Xác nhận tham dự"}
-                    <span className="text-sm transition group-hover:translate-x-1">
-                      ✨
-                    </span>
                   </span>
                 </button>
                 {formStatus === "success" && (
@@ -1377,10 +1496,10 @@ export default function Home() {
           </div>
           <div className="lg:w-1/2" id="blessings">
             <motion.div
-              className="rounded-[32px] border border-blush-100 bg-white p-6 shadow-glow-soft sm:p-8"
+              className="rounded-[32px] bg-white p-6 shadow-glow-soft sm:p-8"
               {...fadeIn()}
             >
-              <div className="text-center">
+              <motion.div className="text-center" {...textReveal()}>
                 <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
                   Lời chúc gần đây
                 </p>
@@ -1390,7 +1509,7 @@ export default function Home() {
                 <p className="mt-2 text-sm text-slate-500">
                   Điền Lời chúc trong form xác nhận tham dự, lời nhắn của bạn sẽ xuất hiện tại đây.
                 </p>
-              </div>
+              </motion.div>
               <div className="mt-8 flex max-h-[520px] flex-col gap-4 overflow-auto pr-2">
                 {loadingMessages ? (
                   <p className="text-center text-slate-500">Đang tải lời chúc...</p>
@@ -1398,7 +1517,7 @@ export default function Home() {
                   messages.map((blessing, index) => (
                     <motion.div
                       key={`${blessing.name}-${index}`}
-                      className="rounded-3xl border border-blush-100 bg-rose-50/70 p-4"
+                      className="rounded-3xl  bg-rose-50/70 p-4"
                       whileHover={{ scale: 1.01, y: -4 }}
                     >
                       <p
@@ -1407,17 +1526,18 @@ export default function Home() {
                       >
                         {blessing.name || "Bạn ẩn danh"}
                       </p>
+                      {blessing.timestamp && (
+                        <p className="text-xs uppercase tracking-[0.3em] text-rose-300">
+                          {new Date(blessing.timestamp).toLocaleDateString()}
+                        </p>
+                      )}
                       <p
-                        className="mt-2 text-sm text-slate-600"
+                        className="mt-1 text-base text-slate-600"
                         style={{ textShadow: "0 1px 4px rgba(0, 0, 0, 0.08)" }}
                       >
                         “{blessing.message}”
                       </p>
-                      {blessing.timestamp && (
-                        <p className="mt-2 text-xs uppercase tracking-[0.3em] text-rose-300">
-                          {new Date(blessing.timestamp).toLocaleDateString()}
-                        </p>
-                      )}
+                      
                     </motion.div>
                   ))
                 )}
@@ -1426,20 +1546,68 @@ export default function Home() {
           </div>
         </section>
 
+        <section
+          className="relative mt-24 overflow-hidden rounded-[40px] border border-rose-100/60 bg-linear-to-br from-white via-rose-50/60 to-amber-50/60 p-8 shadow-glow-soft"
+          id="thank-you"
+        >
+          <motion.div
+            className="flex flex-col items-center gap-10 lg:flex-row"
+            {...fadeIn(0.1)}
+          >
+            <div className="relative w-full max-w-md">
+              <div
+                className="absolute inset-0 translate-y-6 bg-rose-600/30 blur-3xl"
+                aria-hidden
+              />
+              <Image
+                src="/media/thank-you.webp"
+                alt="Thank you"
+                width={900}
+                height={900}
+                priority={false}
+                className="relative z-10 w-full  object-cover  heartbeat-visual"
+              />
+            </div>
+            <div className="space-y-4 text-center lg:flex-1 lg:text-left">
+              <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
+                Thank You
+              </p>
+              <h2 className="font-display text-3xl text-rose-900 sm:text-4xl">
+                Cảm ơn bạn đã góp mặt trong hành trình yêu thương
+              </h2>
+              <p className="text-base text-slate-600">
+                Mỗi lời chúc, mỗi phút giây hiện diện của bạn đều là điều quý giá với chúng
+                mình. Hẹn gặp lại bạn trong ngày vui, cùng nhau làm trái tim này rộn ràng hơn
+                nữa.
+              </p>
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-5 py-3 text-sm font-semibold text-rose-500 shadow-[0_15px_35px_rgba(255,115,147,0.25)]">
+                <span role="img" aria-hidden>
+                  💗
+                </span>
+                Nhịp tim yêu thương vẫn đang đập rộn ràng!
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        <div className="image-block-css p-relative full-width full-height full-mask-size mask-position"><div className="image-background p-absolute"></div></div>
+        <div className="image-background p-absolute"></div>
+        <div className="image-block-css p-relative full-width full-height full-mask-size mask-position"><div className="image-background p-absolute"></div></div>
       </main>
+
 
       <footer className="border-t border-blush-100 bg-white text-center text-sm text-rose-500">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-6 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div className="text-rose-400">
+          <div className="text-black sm:flex sm:gap-4">
             <p>
               Liên hệ cô dâu:{" "}
-              <a href="tel:0398394340" className="font-semibold text-rose-600 hover:underline">
+              <a href="tel:0398394340" className="font-semibold text-black hover:underline">
                 0398 394 340
               </a>
             </p>
             <p>
               Liên hệ chú rể:{" "}
-              <a href="tel:0906394297" className="font-semibold text-rose-600 hover:underline">
+              <a href="tel:0906394297" className="font-semibold text-black hover:underline">
                 0906 394 297
               </a>
             </p>
