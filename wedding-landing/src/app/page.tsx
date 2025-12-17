@@ -349,6 +349,7 @@ export default function Home() {
   const journeySlidesRefs = useRef<HTMLDivElement[]>([]);
   const heroCtaRefs = useRef<HTMLAnchorElement[]>([]);
   const [letterOpened, setLetterOpened] = useState(false);
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
   const galleryTextAnimation = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -502,43 +503,50 @@ export default function Home() {
     };
   }, []);
 
+  const attemptAudioPlayback = useCallback(async () => {
+    const audio = audioRef.current;
+    if (!audio) return false;
+    try {
+      await audio.play();
+      setAudioUnlocked(true);
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
+
   // Background music autoplay
   useEffect(() => {
+    if (!letterOpened) return;
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = 0.45;
 
-    let unlocked = false;
+    let disposed = false;
 
-    const cleanupUnlock = () => {
-      document.removeEventListener("click", unlockAudio);
-      document.removeEventListener("touchstart", unlockAudio);
-    };
-
-    const tryPlay = async () => {
-      if (!audio) return;
-      try {
-        await audio.play();
-        unlocked = true;
-        cleanupUnlock();
-      } catch {
+    const handleInteraction = async () => {
+      if (disposed || audioUnlocked) return;
+      const success = await attemptAudioPlayback();
+      if (success) {
+        document.removeEventListener("click", handleInteraction);
+        document.removeEventListener("touchstart", handleInteraction);
       }
     };
 
-    const unlockAudio = () => {
-      if (unlocked) return;
-      tryPlay();
-    };
-
-    tryPlay();
-    document.addEventListener("click", unlockAudio);
-    document.addEventListener("touchstart", unlockAudio);
+    attemptAudioPlayback().then((success) => {
+      if (!success) {
+        document.addEventListener("click", handleInteraction, { passive: true });
+        document.addEventListener("touchstart", handleInteraction, { passive: true });
+      }
+    });
 
     return () => {
+      disposed = true;
+      document.removeEventListener("click", handleInteraction);
+      document.removeEventListener("touchstart", handleInteraction);
       audio.pause();
-      cleanupUnlock();
     };
-  }, []);
+  }, [letterOpened, attemptAudioPlayback, audioUnlocked]);
 
   useEffect(() => {
     if (!letterOpened) return;
@@ -680,9 +688,10 @@ export default function Home() {
 
   function openLetter() {
     setLetterOpened(true);
-      document.getElementById("letter")?.classList.add("show");
-      document.getElementById("mailWrapper")?.classList.add("hide");
-      startContinuousHeartRain();
+    attemptAudioPlayback();
+    document.getElementById("letter")?.classList.add("show");
+    document.getElementById("mailWrapper")?.classList.add("hide");
+    startContinuousHeartRain();
   }
 
   function startContinuousHeartRain() {
@@ -704,10 +713,11 @@ export default function Home() {
   }
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setLetterOpened(true);
     }, 4000);
-   })
+    return () => clearTimeout(timer);
+  }, []);
   return (
 
     <>
