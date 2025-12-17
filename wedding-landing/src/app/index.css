@@ -58,7 +58,6 @@
   position: relative;
   overflow: hidden;
   padding: 15px 0;
-  border-radius: 999px;
 }
 
 .line-glow::after {
@@ -198,7 +197,6 @@
     background-size: contain;
   }
 }
-
 
 
 .mail-wrapper {
