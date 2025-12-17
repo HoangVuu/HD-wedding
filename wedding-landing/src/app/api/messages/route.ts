@@ -25,7 +25,7 @@ const fallbackMessages = [
   {
     name: "Chung",
     message:
-      "Chúc hai bạn sống trong ngọt ngào và bình yên mãi mãi!",
+      "Chúc hai bạn trăm năm hạnh phúc, sớm có quý tử và luôn vui vẻ bên nhau!",
     timestamp: new Date().toISOString(),
   },
 ];
