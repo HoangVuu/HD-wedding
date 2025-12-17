@@ -491,3 +491,7 @@ margin-top: 18px
 .font-arial {
   font-family: 'Arial', sans-serif;
 }
+
+.button-bor{
+  position: relative;
+}

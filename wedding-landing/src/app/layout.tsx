@@ -26,11 +26,11 @@ const cookie = Cookie({
 export const metadata: Metadata = {
   title: "Quốc Hoàng & Ngọc Đăng | Wedding Invitation",
   description:
-    "Save the date and celebrate the wedding of Quốc Hoàng & Ngọc Đăng with stories, album, RSVP, and blessings.",
+    "Save the date and celebrate the wedding of Quốc Hoàng & Ngọc Đăng ",
   openGraph: {
     title: "Quốc Hoàng & Ngọc Đăng | Wedding Invitation",
     description:
-      "A romantic digital wedding invitation inspired by Khánh & Trinh's celebration.",
+      "Save the date and celebrate the wedding of Quốc Hoàng & Ngọc Đăng.",
     type: "website",
   },
   icons: {

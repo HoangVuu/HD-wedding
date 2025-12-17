@@ -80,15 +80,15 @@ const storySnapshots = [
     label: "Hòa mình trong mùi hoa giấy ngọt ngào của Phú Yên.",
   },
   {
-    src: "/media/s10.jpg",
+    src: "/media/f2.jpg",
     label: "Một cái nhìn thật lâu khiến tim đập rộn ràng.",
   },
   {
-    src: "/media/s11.jpg",
+    src: "/media/gr-min.jpg",
     label: "Khi sân khấu ngoài trời chỉ còn lại chúng mình.",
   },
   {
-    src: "/media/s6.jpg",
+    src: "/media/s3.jpg",
     label: "Khi sân khấu ngoài trời chỉ còn lại chúng mình.",
   },
 ];
@@ -157,23 +157,14 @@ src: "/media/t5-min.jpg",
 const collageImages = [
  "/media/doi/1-min.jpg",
  "/media/doi/2-min.jpg",
- "/media/doi/3-min.jpg",
  "/media/doi/4-min.jpg",
- "/media/doi/5-min.jpg",
  "/media/doi/6-min.jpg",
  "/media/doi/7-min.jpg",
- "/media/doi/8-min.jpg",
- "/media/doi/9-min.jpg",
  "/media/doi/10-min.jpg",
  "/media/doi/11-min.jpg",
  "/media/doi/12-min.jpg",
  "/media/doi/13-min.jpg",
- "/media/doi/14-min.jpg",
  "/media/doi/15-min.jpg",
- "/media/doi/16-min.jpg",
- "/media/doi/17-min.jpg",
- "/media/journey/donghanh-1.jpg",
- "/media/journey/donghanh-5.jpg",
 ];
 
 const journeyAlbumSlides = [
@@ -184,7 +175,7 @@ const journeyAlbumSlides = [
     caption: "Trong sự lịch sự và tinh tế, chúng mình đã bắt đầu câu chuyện của mình.",
   },
   {
-    src: "/media/journey/donghanh-6.jpg",
+    src: "/media/journey/ngoloi-min.jpg",
     date: "30.9.2024",
     title: "Ngỏ lời",
     caption: "Một lời tỏ tình giản dị nhưng đầy chân thành, mở ra hành trình tìm thấy phiên bản tốt nhất của chính mình vì nhau.",
@@ -786,7 +777,7 @@ export default function Home() {
 
       <section
         id="hero"
-        className="relative isolate overflow-hidden text-white pt-[170px]"
+        className="relative isolate overflow-hidden text-white pt-[170px] sm:pt-0"
       >
         <div className="absolute inset-0 bg-[#930014] py-20">
           {heroSlides.map((slide, index) => (
@@ -1261,13 +1252,13 @@ export default function Home() {
           className="full-bleed mt-16 bg-linear-to-b from-white via-rose-50/70 to-white px-4 py-12 sm:px-8"
         >
           <motion.div
-            className="mx-auto max-w-6xl text-center"
+            className="flex flex-col items-center justify-center mx-auto max-w-6xl text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
             variants={galleryTextAnimation}
           >
-            <p className="text-sm uppercase tracking-[0.5em] text-rose-400 ">
+            <p className="text-sm uppercase tracking-[0.5em] text-rose-400 button-bor ">
               Gallery
             </p>
             <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl text-animate-title">
