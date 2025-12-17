@@ -1080,7 +1080,7 @@ export default function Home() {
                       className="rounded-3xl bg-rose-50/70 p-4 text-left cursor-pointer"
                       whileHover={{ y: -10, rotate: -0.5 }}
                     >
-                      <div className="relative h-80 w-full overflow-hidden rounded-2xl sm:h-72">
+                      <div className="relative w-full aspect-3/4 overflow-hidden rounded-2xl sm:h-80">
                         <Image
                           src={story.src}
                           alt="Ký ức yêu thương"
