@@ -963,7 +963,7 @@ export default function Home() {
               <p className="text-sm uppercase tracking-[0.4em] text-emerald-600">
                 Chú rể
               </p>
-              <h3 className="mt-1 font-script text-5xl text-emerald-900 font-wed">
+              <h3 className="mt-1 font-script text-5xl text-emerald-900 font-wedding">
                 Quốc Hoàng
               </h3>
               <div className="mt-4 w-full overflow-hidden rounded-[22px] border border-emerald-100 bg-white/80">
@@ -1016,7 +1016,7 @@ export default function Home() {
               <p className="text-sm uppercase tracking-[0.4em] text-emerald-600">
                 Cô dâu
               </p>
-              <h3 className="mt-1 font-script text-5xl text-emerald-900 font-wed">
+              <h3 className="mt-1 font-script text-5xl text-emerald-900 font-wedding">
                 Ngọc Đăng
               </h3>
               <div className="mt-4 w-full overflow-hidden rounded-[22px] border border-emerald-100 bg-white/80">
@@ -1040,7 +1040,7 @@ export default function Home() {
           </div>
         </section>
 
-      <div className="relative mt-24 grid gap-10 py-8 lg:grid-cols-2 ">
+      <div id="our-stories" className="relative mt-24 grid gap-10 py-8 lg:grid-cols-2 ">
           <div className="heart-rain" id="heartRain"></div>
           <motion.div className="space-y-6" {...fadeIn()}>
             <p className="text-sm uppercase tracking-[0.5em] text-rose-400 font-arial">
