@@ -786,7 +786,7 @@ export default function Home() {
 
       <section
         id="hero"
-        className="relative isolate overflow-hidden text-white"
+        className="relative isolate overflow-hidden text-white pt-[150px]"
       >
         <div className="absolute inset-0 bg-[#930014] py-20">
           {heroSlides.map((slide, index) => (
@@ -813,7 +813,7 @@ export default function Home() {
             </motion.div>
           ))}
         </div>
-        <div className="relative mx-auto sm:pt-24 flex max-w-7xl flex-col gap-10 py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
+        <div className="relative mx-auto sm:pt-24 flex max-w-7xl flex-col gap-10 py-16 sm:py-24 sm:px-8 mb-14 lg:flex-row lg:items-center">
           <motion.div
             className="flex-1 space-y-6 px-4 md:px-0"
             initial={{ opacity: 0, y: 40 }}
@@ -838,7 +838,7 @@ export default function Home() {
                   ref={(el) => {
                     if (el) heroCtaRefs.current[1] = el;
                   }}
-                  className="hero-cta-highlight relative mt-20 sm:mt-4 animated-border-btn group inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-4 md:px-7 py-3 text-sm md:text-base font-semibold  shadow-[0_15px_35px_rgba(0,0,0,0.35)] transition hover:-translate-y-1 hover:bg-white/15"
+                  className="hero-cta-highlight relative sm:mt-4 animated-border-btn group inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-4 md:px-7 py-3 text-sm md:text-base font-semibold  shadow-[0_15px_35px_rgba(0,0,0,0.35)] transition hover:-translate-y-1 hover:bg-white/15"
                 >
                   <span className="">Xác nhận tham dự</span>
                 </Link>
@@ -895,12 +895,12 @@ export default function Home() {
           >
             <div className="gradient-border rounded-[32px] bg-white/95 p-2">
         <Image
-                src="/media/ban.JPG"
+                src="/media/ban.jpg"
                 alt="Quốc Hoàng & Ngọc Đăng"
                 width={860}
                 height={1060}
-                className="h-auto w-full rounded-[26px] object-cover"
-                sizes="(min-width: 1024px) 520px, 100vw"
+                className="w-full rounded-[26px] object-cover"
+                unoptimized
           priority
         />
             </div>
@@ -1085,7 +1085,6 @@ export default function Home() {
                           src={story.src}
                           alt="Ký ức yêu thương"
                           fill
-                          sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 90vw"
                           className="object-cover transition duration-700 hover:scale-105"
                         />
                       </div>
@@ -1331,7 +1330,7 @@ export default function Home() {
                 <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
                   Party
                 </p>
-                <h2 className="mt-2 font-display text-shadow-lg text-3xl from-rose-500 to-rose-300 sm:text-4xl">
+                <h2 className="mt-2 font-display text-shadow-lg text-3xl from-rose-500 to-rose-300 sm:text-4xl text-animate-title">
                   <span className="bg-linear-to-r text-shadow-lg text-[#f1449b] bg-clip-text uppercase font-bold">
                     Hẹn gặp bạn tại hai miền yêu thương
                   </span>
@@ -1374,14 +1373,14 @@ export default function Home() {
         <p className="text-sm uppercase tracking-[0.5em] text-rose-400 mt-24">
                   Confirm Attendance
                 </p>
-                <h2 className="mt-3 font-display text-3xl sm:text-4xl font-bold text-[#9e751c]">
+                <h2 className="mt-3 font-display text-3xl sm:text-4xl font-bold text-[#9e751c] text-animate-title">
                   Bạn có thể tham dự chứ?
                 </h2>
         <section className="mt-12 flex flex-col gap-8 lg:flex-row" id="rsvp">
           
           <div className="lg:w-1/2">
-            <ParallaxSection
-              backgroundSrc="/media/DAG_4224.jpg"
+            <ParallaxSection  
+              backgroundSrc="/media/t9-min.jpg"
               className="rounded-[32px]"
               contentClassName="px-5 py-8 sm:p-10"
             >
@@ -1503,7 +1502,7 @@ export default function Home() {
                 <p className="text-sm uppercase tracking-[0.5em] text-rose-400">
                   Lời chúc gần đây
                 </p>
-                <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl">
+                <h2 className="mt-3 font-display text-3xl text-rose-900 sm:text-4xl text-animate-title">
                   Lan tỏa yêu thương
                 </h2>
                 <p className="mt-2 text-sm text-slate-500">
@@ -1577,14 +1576,12 @@ export default function Home() {
               </h2>
               <p className="text-base text-slate-600">
                 Mỗi lời chúc, mỗi phút giây hiện diện của bạn đều là điều quý giá với chúng
-                mình. Hẹn gặp lại bạn trong ngày vui, cùng nhau làm trái tim này rộn ràng hơn
-                nữa.
+                mình. Hẹn gặp lại bạn trong ngày vui
               </p>
               <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-5 py-3 text-sm font-semibold text-rose-500 shadow-[0_15px_35px_rgba(255,115,147,0.25)]">
                 <span role="img" aria-hidden>
                   💗
                 </span>
-                Nhịp tim yêu thương vẫn đang đập rộn ràng!
               </div>
             </div>
           </motion.div>
