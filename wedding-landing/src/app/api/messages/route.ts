@@ -14,7 +14,7 @@ const SHEETS_WEBHOOK_URL =
   process.env.GOOGLE_SHEETS_WEBHOOK_URL ||
   process.env.NEXT_PUBLIC_SHEETDB_URL ||
   process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEBHOOK_URL ||
-  "https://sheetdb.io/api/v1/c6eefggtbyk8s";
+  "https://sheetdb.io/api/v1/v0go9pn065ndu";
 
 const fallbackMessages = [
   {

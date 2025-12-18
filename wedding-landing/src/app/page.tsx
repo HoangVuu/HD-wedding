@@ -13,6 +13,7 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 type Message = {
   name: string;
@@ -203,7 +204,7 @@ const journeyAlbumSlides = [
   },
   {
     src: "/media/journey/cauhon.jpg",
-    date: "30.10.2024",
+    date: "30.10.2025",
     title: "Cầu hôn",
     caption: "Khoảnh khắc cầu hôn xúc động, lời hứa cho chặng đường sắp tới.",
   },
@@ -219,16 +220,16 @@ const partyEvents = [
   {
     title: "Tiệc Nhà Gái · Phú Yên",
     date: "24 · Tháng 01 ·2026",
-    time: "18:00",
+    time: "17:00",
     venue: "Khách sạn Công Đoàn, 53 Độc Lập, Phường 7, Tuy Hòa, Phú Yên",
-    map: "google.com/maps/dir/10.7917662,106.6261589/53+Độc+Lập,+Phường+7,+Tuy+Hòa,+Phú+Yên/@11.4701967,107.0504982,9.73z/data=!4m9!4m8!1m1!4e1!1m5!1m1!1s0x316fec48c474edf5:0xf9da6578cc01dcd9!2m2!1d109.3208897!2d13.0966895?hl=vi&entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+    map: "https://maps.app.goo.gl/XcVFcoLNJS8FdC3G9?g_st=ipc",
   },
   {
     title: "Tiệc Nhà Trai · Ninh Thuận",
     date: "29 · Tháng 01 · 2026",
-    time: "18:00",
+    time: "17:00",
     venue: "Khách sạn Sài Gòn Ninh Chữ, 19 An Dương Vương, TT. Khánh Hải, Ninh Hải, Ninh Thuận",
-    map: "https://www.google.com/maps/dir/10.7917662,106.6261589/H2QQ%2BH7J,+19+An+D%C6%B0%C6%A1ng+V%C6%B0%C6%A1ng,+TT.+Kh%C3%A1nh+H%E1%BA%A3i,+Ninh+H%E1%BA%A3i,+Ninh+Thu%E1%BA%ADn+660000/@10.9821709,106.8821193,10.07z/data=!4m9!4m8!1m1!4e1!1m5!1m1!1s0x3170d02225624ecf:0x6d94dde8d58a78b9!2m2!1d109.0368385!2d11.5893612?hl=vi&entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+    map: "https://maps.app.goo.gl/R7WRbBAQdxkGZ9QF9?g_st=ipc",
   },
 ];
 
@@ -385,12 +386,12 @@ export default function Home() {
       {
         value: "Nhà Gái (Phú Yên)",
         label: "Nhà gái · Phú Yên",
-        date: "24 · 01 · 2026 · 18:00",
+        date: "24 · 01 · 2026 · 17:00",
       },
       {
         value: "Nhà Trai (Ninh Thuận)",
         label: "Nhà trai · Ninh Thuận",
-                      date: "29 · 01 · 2026 · 18:00",
+                      date: "29 · 01 · 2026 · 17:00",
       },
     ],
     []
@@ -552,7 +553,7 @@ export default function Home() {
   useEffect(() => {
     if (!letterOpened) return;
     if (typeof window === "undefined") return;
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
     const section = journeyAlbumRef.current;
     if (!section) return;
     const slides = journeySlidesRefs.current.filter(Boolean);
@@ -599,6 +600,7 @@ export default function Home() {
       mm.revert();
     };
   }, [letterOpened]);
+
 
   const handleStoryClick = (story: { src: string; caption?: string }) => {
     setStoryModal(story);
@@ -786,6 +788,7 @@ export default function Home() {
         </div>
       </header>
 
+
       <section
         id="hero"
         className="relative isolate overflow-hidden text-white pt-[170px] sm:pt-0"
@@ -855,13 +858,13 @@ export default function Home() {
                 <div>
                   <p className="text-2xl sm:text-3xl font-semibold">24 · 01 · 2026</p>
                   <p className="text-sm text-white/75">
-                    Tuy Hòa, Phú Yên · 18:00
+                    Tuy Hòa, Phú Yên · 17:00
                   </p>
                 </div>
                 <div>
                   <p className="text-2xl sm:text-3xl font-semibold">29 · 01 · 2026</p>
                   <p className="text-sm text-white/75">
-                    Phan Rang, Ninh Thuận · 18:00
+                    Phan Rang, Ninh Thuận · 17:00
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3 text-white/90">
@@ -953,7 +956,7 @@ export default function Home() {
             </h2>
             <div className="line-glow mx-auto h-[4px] w-[70%] bg-transparent  mt-8" />
           </motion.div>
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+          <div data-speed="0.5" className="mt-10 grid gap-8 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
             <motion.div
               className="glass-panel flex flex-col items-center rounded-[28px] border border-emerald-100 bg-emerald-50/40 p-6 text-center shadow-glow-soft"
               initial={{ opacity: 0, x: -50 }}
@@ -1008,6 +1011,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
+            data-speed="1.5"
               className="glass-panel flex flex-col items-center rounded-[28px] border border-emerald-100 bg-emerald-50/40 p-6 text-center shadow-glow-soft"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -1355,15 +1359,14 @@ export default function Home() {
                       {event.time}
                     </p>
                     <p className="mt-1 flex-1 text-slate-600">{event.venue}</p>
-                    <Link
-                      replace
+                    <a
                       href={ensureExternalUrl(event.map)}
                       target="_blank"
                       rel="noreferrer"
                       className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r  px-5 py-2.5 text-sm font-semibold text-black shadow-[0_12px_30px_rgba(248,63,10,0.2)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(244,63,94,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400"
                     >
                       <span className="tracking-wide">Xem bản đồ</span>
-                    </Link>
+                    </a>
                   </motion.div>
                 ))}
               </div>
@@ -1482,7 +1485,7 @@ export default function Home() {
                   </span>
                 </button>
                 {formStatus === "success" && (
-                  <p className="text-center text-sm text-emeraldFog">
+                  <p className="text-center text-sm text-emeraldFog text-[#1af3a7] text-animate-title">
                     Đã ghi nhận! Hẹn bạn trong ngày vui.
                   </p>
                 )}
