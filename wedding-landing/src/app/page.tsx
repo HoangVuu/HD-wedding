@@ -1064,7 +1064,7 @@ export default function Home() {
             Chúng mình tin rằng hạnh phúc không cần phải rực rỡ, chỉ cần đủ ấm. Là khi có một người để trở về, một người sẵn sàng ở bên dù vui hay buồn, thành công hay chông chênh. Từ hai con người độc lập, chúng mình học cách đồng hành — tôn trọng sự khác biệt, trân trọng điểm chung và kiên nhẫn cùng nhau trưởng thành.
             </p>
             <p className="font-arial text-slate-600">
-            Hành trình yêu thương ấy đã đưa chúng mình đến quyết định quan trọng nhất: cùng nắm tay bước sang một chương mới của cuộc đời. Từ hôm nay, không chỉ là “anh” và “em”, mà là chúng mình — cùng viết tiếp câu chuyện đời bằng những khung hình thật dịu dàng, bằng yêu thương bền bỉ và niềm tin vào một tương lai chung.
+            Hành trình yêu thương ấy đã đưa chúng mình đến quyết định quan trọng nhất: cùng nắm tay bước sang một chương mới của cuộc đời. Từ hôm nay, không chỉ là “anh” và “em”, mà là chúng mình — cùng viết tiếp câu chuyện đời bằng những khung hình thật dịu dàng, bằng yêu thương bền bỉ và niềm tin vào một tương lai chung. 
             </p>
           </motion.div>
           <div className="relative overflow-hidden rounded-[30px] border border-rose-100 bg-white/60 p-2 shadow-glow-soft">
